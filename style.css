@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #f1f5f9;
+    background-color: #f8fafc;
     color: #1e293b;
     padding-bottom: 50px;
 }
@@ -15,7 +15,7 @@ body {
 .app-header {
     background: #0f172a;
     color: #fff;
-    padding: 14px 20px;
+    padding: 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,27 +25,31 @@ body {
 }
 
 .badge {
-    background: #d4af37;
+    background: #f59e0b;
     color: #0f172a;
-    font-size: 12px;
-    padding: 2px 8px;
+    font-size: 11px;
+    padding: 2px 7px;
     border-radius: 4px;
 }
 
 .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
 }
 
-.btn-admin {
-    background: #334155;
-    color: #fff;
-    border: 1px solid #475569;
-    padding: 7px 12px;
+.btn-profile, .btn-admin {
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    padding: 6px 12px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .btn-admin.active {
@@ -54,37 +58,37 @@ body {
 }
 
 .btn-add {
-    background: #d4af37;
+    background: #f59e0b;
     color: #0f172a;
     border: none;
-    padding: 7px 14px;
+    padding: 7px 12px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
 }
 
-/* بانەرا کرێکرنا دوکانێ */
+/* Rent Banner */
 .rent-banner {
-    background: linear-gradient(135deg, #1e293b, #334155);
+    background: linear-gradient(135deg, #1e293b, #0f172a);
     color: #fff;
-    padding: 18px 20px;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
-    border-bottom: 3px solid #d4af37;
+    gap: 12px;
+    border-bottom: 3px solid #f59e0b;
 }
 
 .banner-text h4 {
-    color: #d4af37;
-    font-size: 16px;
-    margin-bottom: 4px;
+    color: #f59e0b;
+    font-size: 15px;
+    margin-bottom: 3px;
 }
 
 .banner-text p {
-    font-size: 13px;
+    font-size: 12px;
     color: #cbd5e1;
 }
 
@@ -92,29 +96,28 @@ body {
     background: #25d366;
     color: #fff;
     text-decoration: none;
-    padding: 10px 18px;
+    padding: 8px 16px;
     border-radius: 8px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    gap: 6px;
 }
 
-/* بەشێ کۆنترۆڵ و فلتەران */
+/* Controls */
 .controls {
-    padding: 15px 20px;
+    padding: 14px 20px;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    background: #f8fafc;
+    background: #f1f5f9;
     border: 1px solid #e2e8f0;
-    padding: 10px 14px;
+    padding: 9px 12px;
     border-radius: 10px;
     margin-bottom: 12px;
 }
@@ -123,7 +126,7 @@ body {
     border: none;
     background: transparent;
     width: 100%;
-    margin-right: 10px;
+    margin-right: 8px;
     outline: none;
     font-size: 14px;
 }
@@ -145,7 +148,7 @@ body {
 .store-btn, .cat-btn {
     border: 1px solid #cbd5e1;
     background: #fff;
-    padding: 6px 14px;
+    padding: 5px 14px;
     border-radius: 20px;
     font-size: 12px;
     cursor: pointer;
@@ -154,9 +157,9 @@ body {
 }
 
 .store-btn.active {
-    background: #d4af37;
+    background: #f59e0b;
     color: #0f172a;
-    border-color: #d4af37;
+    border-color: #f59e0b;
     font-weight: bold;
 }
 
@@ -166,10 +169,10 @@ body {
     border-color: #0f172a;
 }
 
-/* کارتێن بەرهەمان */
+/* Products Grid */
 .products-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 16px;
     padding: 20px;
 }
@@ -178,7 +181,7 @@ body {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -199,19 +202,18 @@ body {
 }
 
 .store-tag {
-    display: inline-block;
-    background: #fef08a;
-    color: #854d0e;
+    background: #fef3c7;
+    color: #92400e;
     font-size: 11px;
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 2px 7px;
     border-radius: 6px;
     margin-bottom: 6px;
     width: fit-content;
 }
 
 .product-info h4 {
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 4px;
 }
 
@@ -219,7 +221,7 @@ body {
     color: #059669;
     font-weight: bold;
     font-size: 15px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .seller-meta {
@@ -228,13 +230,12 @@ body {
     margin-bottom: 12px;
 }
 
-.btn-whatsapp {
+.btn-buy {
     margin-top: auto;
-    background: #25d366;
+    background: #0f172a;
     color: #fff;
-    text-decoration: none;
-    text-align: center;
-    padding: 8px;
+    border: none;
+    padding: 9px;
     border-radius: 8px;
     font-size: 13px;
     font-weight: bold;
@@ -242,6 +243,12 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-buy:hover {
+    background: #1e293b;
 }
 
 .delete-btn {
@@ -251,18 +258,18 @@ body {
     background: rgba(220, 38, 38, 0.9);
     color: #fff;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 13px;
     z-index: 10;
 }
 
-/* مۆداڵ */
+/* Modals */
 .modal {
     display: none;
     position: fixed;
@@ -277,9 +284,9 @@ body {
 .modal-content {
     background: #fff;
     width: 90%;
-    max-width: 440px;
-    padding: 20px;
-    border-radius: 12px;
+    max-width: 420px;
+    padding: 22px;
+    border-radius: 14px;
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
@@ -287,25 +294,65 @@ body {
 
 .close-btn {
     position: absolute;
-    top: 10px; left: 15px;
+    top: 12px; left: 16px;
     font-size: 24px;
     cursor: pointer;
+    color: #64748b;
 }
 
-#productForm label {
+.order-header {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.order-header i {
+    font-size: 32px;
+    color: #f59e0b;
+    margin-bottom: 6px;
+}
+
+.product-summary {
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    border-right: 4px solid #f59e0b;
+}
+
+form label {
     display: block;
     margin-top: 10px;
     font-size: 12px;
     font-weight: bold;
+    color: #334155;
 }
 
-#productForm input, #productForm select {
+form input, form select, form textarea {
     width: 100%;
-    padding: 8px 10px;
+    padding: 9px 10px;
     margin-top: 4px;
     border: 1px solid #cbd5e1;
-    border-radius: 6px;
+    border-radius: 7px;
     outline: none;
+    font-size: 13px;
+}
+
+.btn-confirm-order {
+    width: 100%;
+    background: #25d366;
+    color: #fff;
+    padding: 11px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn-submit {

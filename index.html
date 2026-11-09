@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مۆڵ و بازاڕێ ئۆنلاین</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- سەرێ ئەپی -->
+    <header class="app-header">
+        <div class="logo">
+            <h2>مۆڵا مە <span class="badge">Mall</span></h2>
+        </div>
+        <div class="header-actions">
+            <button id="adminToggleBtn" class="btn-admin" title="دۆخێ ئەدمینی">
+                <i class="fa-solid fa-user-shield"></i> ئەدمین
+            </button>
+            <button id="openAddModalBtn" class="btn-add">
+                <i class="fa-solid fa-plus"></i> زێدەکرنا بەرهەمی
+            </button>
+        </div>
+    </header>
+
+    <!-- بانەرا کرێکرنا دوکانێ بۆ خەلکی -->
+    <section class="rent-banner">
+        <div class="banner-text">
+            <h4><i class="fa-solid fa-shop"></i> تە دڤێت کەلپەلێن خۆ بفرۆشی؟</h4>
+            <p>دوکانا خۆ نوکە د ئەپێ مە دا کرێ بکە و بەرهەمێن خۆ نیشانی هەزاران کڕیاران بدە.</p>
+        </div>
+        <a id="rentShopBtn" href="#" target="_blank" class="btn-rent">
+            <i class="fa-brands fa-whatsapp"></i> کرێکرنا دوکانێ
+        </a>
+    </section>
+
+    <!-- لێگەڕیان و پۆلێن -->
+    <section class="controls">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ل چ بەرهەمی یان دوکانەکێ دگەڕی؟">
+        </div>
+
+        <!-- فلتەرکرنا دوکانان -->
+        <div class="filter-section-title">دوکانێن پشکدار:</div>
+        <div class="store-tabs" id="storeTabs">
+            <button class="store-btn active" data-store="all">هەمی دوکان</button>
+        </div>
+
+        <!-- فلتەرکرنا کاتیگۆریان -->
+        <div class="filter-section-title" style="margin-top: 10px;">جۆرێ بەرهەمی:</div>
+        <div class="category-tabs">
+            <button class="cat-btn active" data-category="all">هەمی</button>
+            <button class="cat-btn" data-category="clothes">جلوبەرگ</button>
+            <button class="cat-btn" data-category="shoes">پێلاڤ</button>
+            <button class="cat-btn" data-category="electronics">ئەلکترۆنیات</button>
+            <button class="cat-btn" data-category="other">یێن دی</button>
+        </div>
+    </section>
+
+    <!-- جهێ بەرهەمان -->
+    <main class="products-container" id="productsGrid">
+        <!-- بەرهەم ل ڤێرە بار دبن -->
+    </main>
+
+    <!-- پەنجەرەیا زێدەکرنا بەرهەمی -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h3>زێدەکرنا کاڵایێ نوی</h3>
+            <form id="productForm">
+                <label>ناڤێ دوکانا تە:</label>
+                <input type="text" id="prodStore" placeholder="بۆ نموونە: کۆگەها زاخۆ، بۆتیکا زارا..." required>
+
+                <label>ناڤێ بەرهەمی:</label>
+                <input type="text" id="prodTitle" placeholder="بۆ نموونە: قەمیسێ پیاوان" required>
+
+                <label>پۆلێن (کاتیگۆری):</label>
+                <select id="prodCategory" required>
+                    <option value="clothes">جلوبەرگ</option>
+                    <option value="shoes">پێلاڤ</option>
+                    <option value="electronics">ئەلکترۆنیات</option>
+                    <option value="other">یێن دی</option>
+                </select>
+
+                <label>نرخ:</label>
+                <input type="text" id="prodPrice" placeholder="بۆ نموونە: 25,000 دینار" required>
+
+                <label>وێنەیێ بەرهەمی (ژ کۆمپیوتەری هەلبژێرە):</label>
+                <input type="file" id="prodImageFile" accept="image/*" required>
+                <div id="imagePreviewContainer" style="display: none; margin-top: 8px;">
+                    <img id="imagePreview" src="" alt="پێشبینیا وێنەی" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
+                </div>
+
+                <label>ژمارەیا WhatsApp یا دوکاندارێ:</label>
+                <input type="tel" id="prodPhone" placeholder="بۆ نموونە: 9647500000000" required>
+
+                <label>شار / جهێ دوکانێ:</label>
+                <input type="text" id="prodCity" placeholder="دهۆک، زاخۆ، هەولێر..." required>
+
+                <button type="submit" class="btn-submit">بەلاڤکرنا بەرهەمی</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

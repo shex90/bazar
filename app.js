@@ -278,27 +278,46 @@ langSelect.addEventListener('change', (e) => {
 // بەرهەمێن دەستپێکێ
 const initialProducts = [
     {
-        id: 1,
-        storeName: "Zara Boutique",
-        title: "Men's Winter Jacket",
-        category: "clothes",
-        price: "35,000 IQD",
-        image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-        phone: "9647500000000",
-        city: "Duhok"
+        id: 101,
+        storeName: "Adidas Store",
+        title: "پێلاڤا Adidas Ultraboost ئەسڵی",
+        category: "shoes",
+        price: "65 $",
+        image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600",
+        phone: "9647504799202",
+        city: "دهۆک"
     },
     {
-        id: 2,
-        storeName: "Zakho Outlet",
-        title: "Nike Air Running Shoes",
+        id: 102,
+        storeName: "Adidas Store",
+        title: "چاکێت و تراکسوودێ وەرزشی یێ Adidas",
+        category: "clothes",
+        price: "45,000 دینار",
+        image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600",
+        phone: "9647504799202",
+        city: "دهۆک"
+    },
+    {
+        id: 103,
+        storeName: "Adidas Store",
+        title: "فەنێلا وەرزشی یا Adidas Original",
+        category: "clothes",
+        price: "20,000 دینار",
+        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
+        phone: "9647504799202",
+        city: "دهۆک"
+    },
+    {
+        id: 104,
+        storeName: "Adidas Store",
+        title: "پێلاڤا پێڕاکردنێ Adidas Runfalcon",
         category: "shoes",
-        price: "50 $",
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
-        phone: "9647500000000",
-        city: "Zakho"
+        price: "40 $",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+        phone: "9647504799202",
+        city: "دهۆک"
     }
 ];
-
 let products = JSON.parse(localStorage.getItem('my_market_products')) || initialProducts;
 let cart = JSON.parse(localStorage.getItem('my_market_cart')) || [];
 let isAdminMode = false;

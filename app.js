@@ -1,9 +1,9 @@
-// ژمارەیا WhatsApp یا خۆ ل ڤێرە دابنێ بۆ پەیوەندیکرنا کڕێکرنا دوکانێ
+// ژمارەیا WhatsApp یا تە بۆ کرێکرنا دوکانێ
 const OWNER_PHONE = "9647504799202";
 
-// ڕێکخستنا لینکا بانەرا کرێکرنا دوکانێ
+// لینکا بانەرا سەرێ ئەپی
 const rentBtn = document.getElementById('rentShopBtn');
-const rentMessage = encodeURIComponent("سڵاو، من دڤێت دوکانەکێ د ناڤ بازاڕێ ئۆنلاین دا کرێ بکەم بۆ فرۆتنا بەرهەمێن خۆ. چەوا دەست پێ بکەم؟");
+const rentMessage = encodeURIComponent("سڵاو، من دڤێت دوکانەکێ د ناڤ بازاڕێ ئۆنلاین دا کرێ بکەم بۆ فرۆتنا بەرهەمێن خۆ.");
 rentBtn.href = `https://wa.me/${OWNER_PHONE}?text=${rentMessage}`;
 
 // بەرهەمێن دەستپێکێ
@@ -33,6 +33,7 @@ const initialProducts = [
 let products = JSON.parse(localStorage.getItem('my_market_products')) || initialProducts;
 let isAdminMode = false;
 let uploadedImageBase64 = "";
+let profileAvatarBase64 = "";
 
 let selectedStore = 'all';
 let selectedCategory = 'all';
@@ -45,7 +46,85 @@ const searchInput = document.getElementById('searchInput');
 const catButtons = document.querySelectorAll('.cat-btn');
 const adminToggleBtn = document.getElementById('adminToggleBtn');
 
-// بەشێ مۆداڵا کڕینێ (Order Modal)
+// بەشێ پرۆفایل و ئەکاونت
+const profileModal = document.getElementById('profileModal');
+const userProfileBtn = document.getElementById('userProfileBtn');
+const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+const profileForm = document.getElementById('profileForm');
+const profileImageInput = document.getElementById('profileImageInput');
+const profileAvatarPreview = document.getElementById('profileAvatarPreview');
+const headerUserAvatar = document.getElementById('headerUserAvatar');
+const headerUserIcon = document.getElementById('headerUserIcon');
+const userProfileText = document.getElementById('userProfileText');
+
+const profNameInput = document.getElementById('profName');
+const profEmailInput = document.getElementById('profEmail');
+const profPhoneInput = document.getElementById('profPhone');
+const profCityInput = document.getElementById('profCity');
+const profAddressInput = document.getElementById('profAddress');
+
+// بارکرنا زانیاریێن هەژمارێ
+function loadUserProfile() {
+    const saved = JSON.parse(localStorage.getItem('saved_customer_profile'));
+    if (saved) {
+        profNameInput.value = saved.name || "";
+        profEmailInput.value = saved.email || "";
+        profPhoneInput.value = saved.phone || "";
+        profCityInput.value = saved.city || "";
+        profAddressInput.value = saved.address || "";
+        
+        userProfileText.innerText = saved.name.split(" ")[0] || "هەژمار";
+
+        if (saved.avatar) {
+            profileAvatarBase64 = saved.avatar;
+            profileAvatarPreview.src = saved.avatar;
+            headerUserAvatar.src = saved.avatar;
+            headerUserAvatar.style.display = 'inline-block';
+            headerUserIcon.style.display = 'none';
+        }
+    }
+}
+
+// ڤەکرنا پەنجەرەیا پرۆفایلی ب کلیک ل سەر هەژمار
+userProfileBtn.addEventListener('click', () => {
+    loadUserProfile();
+    profileModal.style.display = 'flex';
+});
+
+closeProfileModalBtn.onclick = () => profileModal.style.display = 'none';
+
+// هەلبژارتنا وێنەیێ پرۆفایلی ژ ناو مۆبایلێ
+profileImageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            profileAvatarBase64 = e.target.result;
+            profileAvatarPreview.src = profileAvatarBase64;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// پاشەکەوتکرنا هەژمارێ
+profileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const profile = {
+        name: profNameInput.value.trim(),
+        email: profEmailInput.value.trim(),
+        phone: profPhoneInput.value.trim(),
+        city: profCityInput.value.trim(),
+        address: profAddressInput.value.trim(),
+        avatar: profileAvatarBase64 || profileAvatarPreview.src
+    };
+
+    localStorage.setItem('saved_customer_profile', JSON.stringify(profile));
+    loadUserProfile();
+    profileModal.style.display = 'none';
+    alert("هەژمارا تە ب سەرکەفتییانە هاتە پاشەکەوتکرن!");
+});
+
+// مۆداڵا کڕین و ناڤنیشان
 const orderModal = document.getElementById('orderModal');
 const closeOrderModalBtn = document.getElementById('closeOrderModalBtn');
 const orderForm = document.getElementById('orderForm');
@@ -55,45 +134,53 @@ const custPhoneInput = document.getElementById('custPhone');
 const custCityInput = document.getElementById('custCity');
 const custAddressInput = document.getElementById('custAddress');
 
-// بەشێ مۆداڵا زێدەکرنا کاڵای
-const addModal = document.getElementById('addModal');
-const openAddModalBtn = document.getElementById('openAddModalBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const productForm = document.getElementById('productForm');
-const fileInput = document.getElementById('prodImageFile');
-const imagePreview = document.getElementById('imagePreview');
-const previewContainer = document.getElementById('imagePreviewContainer');
+window.openOrderModal = function(id) {
+    currentBuyingProduct = products.find(p => p.id === id);
+    if (!currentBuyingProduct) return;
 
-// پڕکرنا خۆکار یا ناڤنیشانێ کڕیاری ژ بیرگەیێ (وەک ترێندیۆل)
-function loadSavedCustomerInfo() {
+    orderSummary.innerHTML = `
+        <strong>بەرهەم:</strong> ${currentBuyingProduct.title}<br>
+        <strong>نرخ:</strong> ${currentBuyingProduct.price}<br>
+        <strong>دوکان:</strong> ${currentBuyingProduct.storeName || 'دوکان'}
+    `;
+
+    // خۆکار پڕکرنا فۆڕمێ ب زانیاریێن هەژمارێ
     const saved = JSON.parse(localStorage.getItem('saved_customer_profile'));
     if (saved) {
         custNameInput.value = saved.name || "";
         custPhoneInput.value = saved.phone || "";
         custCityInput.value = saved.city || "";
         custAddressInput.value = saved.address || "";
-        document.getElementById('userProfileText').innerText = saved.name.split(" ")[0] || "هەژمار";
     }
-}
 
-// پاراستنا ناڤنیشانێ کڕیاری بۆ جارا بهێت
-function saveCustomerInfo(name, phone, city, address) {
-    const profile = { name, phone, city, address };
-    localStorage.setItem('saved_customer_profile', JSON.stringify(profile));
-    document.getElementById('userProfileText').innerText = name.split(" ")[0];
-}
+    orderModal.style.display = 'flex';
+};
 
-// دوگمەیا پرۆفایل ل سەرێ ئەپی
-document.getElementById('userProfileBtn').addEventListener('click', () => {
-    const saved = JSON.parse(localStorage.getItem('saved_customer_profile'));
-    if (saved) {
-        alert(`زانیاریێن هەژمارا تە:\nناڤ: ${saved.name}\nتەلەفۆن: ${saved.phone}\nناڤنیشان: ${saved.city} - ${saved.address}`);
-    } else {
-        alert("هێشتا چ داواکاری نەهاتینە تۆمارکرن. دەمێ تو تشتەکێ دکڕی زانیاریێن تە دێ هێنە پاراستن.");
-    }
+closeOrderModalBtn.onclick = () => orderModal.style.display = 'none';
+
+orderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!currentBuyingProduct) return;
+
+    const invoice = 
+`🛍️ *داواکارییا نوی ژ بازاڕێ ئۆنلاین*
+━━━━━━━━━━━━━━
+🏪 *دوکان:* ${currentBuyingProduct.storeName || 'گشتی'}
+📦 *بەرهەم:* ${currentBuyingProduct.title}
+💰 *نرخ:* ${currentBuyingProduct.price}
+━━━━━━━━━━━━━━
+👤 *کڕیار:* ${custNameInput.value.trim()}
+📞 *تەلەفۆن:* ${custPhoneInput.value.trim()}
+📍 *باژێڕ:* ${custCityInput.value.trim()}
+🏠 *ناڤنیشان:* ${custAddressInput.value.trim()}
+━━━━━━━━━━━━━━`;
+
+    const vendorPhone = currentBuyingProduct.phone.replace(/[^0-9]/g, '');
+    window.open(`https://wa.me/${vendorPhone}?text=${encodeURIComponent(invoice)}`, '_blank');
+    orderModal.style.display = 'none';
 });
 
-// پیشاندانا دوکانان د بەشێ فلتەری دا
+// پیشاندانا دوکانان
 function updateStoreTabs() {
     const stores = ['all', ...new Set(products.map(p => p.storeName || "دوکانا گشتی"))];
     storeTabsContainer.innerHTML = '';
@@ -113,21 +200,7 @@ function updateStoreTabs() {
     });
 }
 
-// پیشاندانا پێشبینیا وێنەی ژ کۆمپیوتەری
-fileInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            uploadedImageBase64 = e.target.result;
-            imagePreview.src = uploadedImageBase64;
-            previewContainer.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// نیشادانا بەرهەمان ل سەر شاشەی
+// نیشادانا بەرهەمان
 function renderProducts(items) {
     grid.innerHTML = '';
     if (items.length === 0) {
@@ -140,7 +213,7 @@ function renderProducts(items) {
         card.className = 'product-card';
         
         const deleteButton = isAdminMode ? `
-            <button class="delete-btn" onclick="deleteProduct(${item.id})" title="ژێبرنا بەرهەمی">
+            <button class="delete-btn" onclick="deleteProduct(${item.id})" title="ژێبرن">
                 <i class="fa-solid fa-trash-can"></i>
             </button>
         ` : '';
@@ -164,77 +237,18 @@ function renderProducts(items) {
     });
 }
 
-// ڤەکرنا پەنجەرەیا ناڤنیشان و کڕینێ
-window.openOrderModal = function(id) {
-    currentBuyingProduct = products.find(p => p.id === id);
-    if (!currentBuyingProduct) return;
-
-    orderSummary.innerHTML = `
-        <strong>بەرهەم:</strong> ${currentBuyingProduct.title}<br>
-        <strong>نرخ:</strong> ${currentBuyingProduct.price}<br>
-        <strong>دوکان:</strong> ${currentBuyingProduct.storeName || 'دوکان'}
-    `;
-
-    loadSavedCustomerInfo();
-    orderModal.style.display = 'flex';
-};
-
-// داخستنا پەنجەرەیا کڕینێ
-closeOrderModalBtn.onclick = () => {
-    orderModal.style.display = 'none';
-};
-
-// کڕیار فۆڕما کڕینێ تەواو دکەت
-orderForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!currentBuyingProduct) return;
-
-    const custName = custNameInput.value.trim();
-    const custPhone = custPhoneInput.value.trim();
-    const custCity = custCityInput.value.trim();
-    const custAddress = custAddressInput.value.trim();
-
-    // پاراستنا ناڤنیشانی بۆ جارێن بهێت
-    saveCustomerInfo(custName, custPhone, custCity, custAddress);
-
-    // نامەیا فەرمی یا داواکاریێ بۆ فرۆشیاری
-    const invoiceMessage = 
-`🛍️ *داواکارییا نوی ژ بازاڕێ ئۆنلاین*
-━━━━━━━━━━━━━━
-🏪 *دوکان:* ${currentBuyingProduct.storeName || 'گشتی'}
-📦 *بەرهەم:* ${currentBuyingProduct.title}
-💰 *نرخ:* ${currentBuyingProduct.price}
-━━━━━━━━━━━━━━
-👤 *ناڤێ کڕیاری:* ${custName}
-📞 *تەلەفۆنا کڕیاری:* ${custPhone}
-📍 *باژێڕ:* ${custCity}
-🏠 *ناڤنیشانێ گەیاندنێ:* ${custAddress}
-━━━━━━━━━━━━━━
-تکایە بۆ گەیاندنێ پەیوەندیێ ب من بکەن.`;
-
-    const vendorPhone = currentBuyingProduct.phone.replace(/[^0-9]/g, '');
-    const waUrl = `https://wa.me/${vendorPhone}?text=${encodeURIComponent(invoiceMessage)}`;
-
-    // ڤەکرنا ڕاستەوخۆ یا WhatsApp
-    window.open(waUrl, '_blank');
-    orderModal.style.display = 'none';
-});
-
-// فلتەرکرن
 function applyFilters() {
     const term = searchInput.value.toLowerCase();
-    
     let filtered = products.filter(p => {
         const matchStore = (selectedStore === 'all') || (p.storeName === selectedStore);
         const matchCat = (selectedCategory === 'all') || (p.category === selectedCategory);
         const matchSearch = p.title.toLowerCase().includes(term) || (p.storeName && p.storeName.toLowerCase().includes(term));
         return matchStore && matchCat && matchSearch;
     });
-
     renderProducts(filtered);
 }
 
-// ئەدمین ب پاسۆرد (1234)
+// ئەدمین
 adminToggleBtn.addEventListener('click', () => {
     if (!isAdminMode) {
         const pass = prompt("پاسۆردێ ئەدمینی بنڤیسە:");
@@ -251,7 +265,6 @@ adminToggleBtn.addEventListener('click', () => {
     applyFilters();
 });
 
-// ژێبرنا بەرهەمی
 window.deleteProduct = function(id) {
     if (confirm("ئایا دڤێت ئەڤ بەرهەمە بهێتە ژێبرن؟")) {
         products = products.filter(p => p.id !== id);
@@ -261,7 +274,6 @@ window.deleteProduct = function(id) {
     }
 };
 
-// کاتیگۆری
 catButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         catButtons.forEach(b => b.classList.remove('active'));
@@ -273,7 +285,28 @@ catButtons.forEach(btn => {
 
 searchInput.addEventListener('input', applyFilters);
 
-// زێدەکرنا کاڵایێ نوی
+// زێدەکرنا بەرهەمی
+const addModal = document.getElementById('addModal');
+const openAddModalBtn = document.getElementById('openAddModalBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const productForm = document.getElementById('productForm');
+const fileInput = document.getElementById('prodImageFile');
+const imagePreview = document.getElementById('imagePreview');
+const previewContainer = document.getElementById('imagePreviewContainer');
+
+fileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            uploadedImageBase64 = e.target.result;
+            imagePreview.src = uploadedImageBase64;
+            previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 openAddModalBtn.onclick = () => addModal.style.display = 'flex';
 closeModalBtn.onclick = () => {
     addModal.style.display = 'none';
@@ -285,7 +318,7 @@ closeModalBtn.onclick = () => {
 productForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!uploadedImageBase64) {
-        alert("تکایە وێنەیەک ژ کۆمپیوتەری هەلبژێرە!");
+        alert("تکایە وێنەیەک هەلبژێرە!");
         return;
     }
 
@@ -302,7 +335,6 @@ productForm.addEventListener('submit', (e) => {
 
     products.unshift(newProduct);
     localStorage.setItem('my_market_products', JSON.stringify(products));
-    
     updateStoreTabs();
     applyFilters();
 
@@ -312,7 +344,7 @@ productForm.addEventListener('submit', (e) => {
     addModal.style.display = 'none';
 });
 
-// دەستپێکرن
+// دەستپێکرنا ئەپێ
 updateStoreTabs();
 applyFilters();
-loadSavedCustomerInfo();
+loadUserProfile();

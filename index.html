@@ -16,8 +16,11 @@
             <h2>بازاڕێ مە <span class="badge">Mall</span></h2>
         </div>
         <div class="header-actions">
-            <button id="userProfileBtn" class="btn-profile" title="هەژمارا من">
-                <i class="fa-solid fa-user"></i> <span id="userProfileText">هەژمار</span>
+            <!-- دوگمەیا هەژمارێ دگەل وێنەیێ پرۆفایلی -->
+            <button id="userProfileBtn" class="btn-profile">
+                <img id="headerUserAvatar" src="" style="display: none;" class="header-avatar" alt="پرۆفایل">
+                <i id="headerUserIcon" class="fa-solid fa-user"></i>
+                <span id="userProfileText">هەژمار</span>
             </button>
             <button id="adminToggleBtn" class="btn-admin" title="دۆخێ ئەدمینی">
                 <i class="fa-solid fa-user-shield"></i> ئەدمین
@@ -64,7 +67,46 @@
     <!-- جهێ بەرهەمان -->
     <main class="products-container" id="productsGrid"></main>
 
-    <!-- مۆداڵا کڕین و ناڤنیشانێ کڕیاری (Trendyol Checkout) -->
+    <!-- مۆداڵا پرۆفایل و هەژمارێ (Profile Modal) -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeProfileModalBtn">&times;</span>
+            <div class="profile-header">
+                <div class="avatar-wrapper">
+                    <img id="profileAvatarPreview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200" alt="Avatar">
+                    <label for="profileImageInput" class="avatar-edit-badge" title="گۆڕینا وێنەی">
+                        <i class="fa-solid fa-camera"></i>
+                    </label>
+                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                </div>
+                <h3 style="margin-top: 10px;">پرۆفایلێ من</h3>
+                <p style="font-size: 12px; color: #64748b;">زانیاریێن خۆ بنڤیسە دا ئەکاونتێ تە دروست ببیت</p>
+            </div>
+
+            <form id="profileForm">
+                <label>ناڤێ تە یێ تەواو:</label>
+                <input type="text" id="profName" placeholder="بۆ نموونە: ڕەمەزان حسێن" required>
+
+                <label>ئیمەیل (Email):</label>
+                <input type="email" id="profEmail" placeholder="name@example.com" required>
+
+                <label>ژمارەیا مۆبایلێ (WhatsApp):</label>
+                <input type="tel" id="profPhone" placeholder="0750xxxxxxx" required>
+
+                <label>باژێڕ / دەڤەر:</label>
+                <input type="text" id="profCity" placeholder="دهۆک، زاخۆ..." required>
+
+                <label>ناڤنیشانێ گەیاندنێ (تاخ، کووچە):</label>
+                <textarea id="profAddress" rows="2" placeholder="تاخێ مالتا، جاددەیا سەرەکی..." required></textarea>
+
+                <button type="submit" class="btn-save-profile">
+                    <i class="fa-solid fa-floppy-disk"></i> پاشەکەوتکرنا هەژمارێ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- مۆداڵا کڕین و داواکرنێ -->
     <div class="modal" id="orderModal">
         <div class="modal-content">
             <span class="close-btn" id="closeOrderModalBtn">&times;</span>
@@ -73,43 +115,41 @@
                 <h3>زانیاریێن گەیاندن و کڕینێ</h3>
             </div>
             
-            <div class="product-summary" id="orderProductSummary">
-                <!-- پێشبینیا کورتییا بەرهەمی ل ڤێرە بار دبیت -->
-            </div>
+            <div class="product-summary" id="orderProductSummary"></div>
 
             <form id="orderForm">
-                <label>ناڤێ تە یێ سێیانی:</label>
-                <input type="text" id="custName" placeholder="بۆ نموونە: ئارام ئەحمەد عەلی" required>
+                <label>ناڤێ کڕیاری:</label>
+                <input type="text" id="custName" required>
 
-                <label>ژمارەیا مۆبایلێ (WhatsApp):</label>
-                <input type="tel" id="custPhone" placeholder="0750xxxxxxx" required>
+                <label>ژمارەیا مۆبایلێ:</label>
+                <input type="tel" id="custPhone" required>
 
-                <label>باژێڕ / دەڤەر:</label>
-                <input type="text" id="custCity" placeholder="دهۆک، زاخۆ، سێمێل، هەولێر..." required>
+                <label>باژێڕ:</label>
+                <input type="text" id="custCity" required>
 
-                <label>ناڤنیشانێ تەواو (تاخ، نێزیکترین جهـ):</label>
-                <textarea id="custAddress" rows="2" placeholder="تاخێ مالتا، نێزیک مزگەفتا گەورە، جاددەیا سەرەکی..." required></textarea>
+                <label>ناڤنیشانێ گەیاندنێ:</label>
+                <textarea id="custAddress" rows="2" required></textarea>
 
                 <button type="submit" class="btn-confirm-order">
-                    <i class="fa-brands fa-whatsapp"></i> پشتڕاستکرن و داواکرن ب WhatsApp
+                    <i class="fa-brands fa-whatsapp"></i> داواکرن ب WhatsApp
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- مۆداڵا زێدەکرنا کاڵایێ نوی ژ لایێ دوکانداران ڤە -->
+    <!-- مۆداڵا زێدەکرنا کاڵایێ نوی -->
     <div class="modal" id="addModal">
         <div class="modal-content">
             <span class="close-btn" id="closeModalBtn">&times;</span>
             <h3>زێدەکرنا کاڵایێ نوی</h3>
             <form id="productForm">
                 <label>ناڤێ دوکانا تە:</label>
-                <input type="text" id="prodStore" placeholder="بۆ نموونە: کۆگەها زاخۆ، بۆتیکا زارا..." required>
+                <input type="text" id="prodStore" placeholder="بۆ نموونە: بۆتیکا زارا..." required>
 
                 <label>ناڤێ بەرهەمی:</label>
-                <input type="text" id="prodTitle" placeholder="بۆ نموونە: قەمیسێ پیاوان" required>
+                <input type="text" id="prodTitle" placeholder="چاکێت، پێلاڤ..." required>
 
-                <label>پۆلێن (کاتیگۆری):</label>
+                <label>پۆلێن:</label>
                 <select id="prodCategory" required>
                     <option value="clothes">جلوبەرگ</option>
                     <option value="shoes">پێلاڤ</option>
@@ -118,16 +158,16 @@
                 </select>
 
                 <label>نرخ:</label>
-                <input type="text" id="prodPrice" placeholder="بۆ نموونە: 25,000 دینار" required>
+                <input type="text" id="prodPrice" placeholder="25,000 دینار" required>
 
-                <label>وێنەیێ بەرهەمی (ژ کۆمپیوتەری هەلبژێرە):</label>
+                <label>وێنەیێ بەرهەمی:</label>
                 <input type="file" id="prodImageFile" accept="image/*" required>
                 <div id="imagePreviewContainer" style="display: none; margin-top: 8px;">
-                    <img id="imagePreview" src="" alt="پێشبینیا وێنەی" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
+                    <img id="imagePreview" src="" alt="پێشبینی" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
                 </div>
 
                 <label>ژمارەیا WhatsApp یا دوکاندارێ:</label>
-                <input type="tel" id="prodPhone" placeholder="بۆ نموونە: 9647500000000" required>
+                <input type="tel" id="prodPhone" placeholder="964750xxxxxxx" required>
 
                 <label>شار / جهێ دوکانێ:</label>
                 <input type="text" id="prodCity" placeholder="دهۆک، زاخۆ..." required>

@@ -42,14 +42,22 @@ body {
     background: #1e293b;
     color: #f1f5f9;
     border: 1px solid #334155;
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 5px 12px;
+    border-radius: 20px;
     font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.header-avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #f59e0b;
 }
 
 .btn-admin.active {
@@ -61,14 +69,14 @@ body {
     background: #f59e0b;
     color: #0f172a;
     border: none;
-    padding: 7px 12px;
+    padding: 6px 12px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     font-size: 12px;
 }
 
-/* Rent Banner */
+/* Banner */
 .rent-banner {
     background: linear-gradient(135deg, #1e293b, #0f172a);
     color: #fff;
@@ -169,7 +177,7 @@ body {
     border-color: #0f172a;
 }
 
-/* Products Grid */
+/* Products */
 .products-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -244,11 +252,6 @@ body {
     justify-content: center;
     gap: 6px;
     cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-buy:hover {
-    background: #1e293b;
 }
 
 .delete-btn {
@@ -300,24 +303,42 @@ body {
     color: #64748b;
 }
 
-.order-header {
+/* Profile Modal Avatar Style */
+.profile-header {
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
-.order-header i {
-    font-size: 32px;
-    color: #f59e0b;
-    margin-bottom: 6px;
+.avatar-wrapper {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
 }
 
-.product-summary {
-    background: #f1f5f9;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 14px;
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f59e0b;
+}
+
+.avatar-edit-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: #0f172a;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     font-size: 13px;
-    border-right: 4px solid #f59e0b;
+    border: 2px solid #fff;
 }
 
 form label {
@@ -338,9 +359,9 @@ form input, form select, form textarea {
     font-size: 13px;
 }
 
-.btn-confirm-order {
+.btn-save-profile, .btn-submit, .btn-confirm-order {
     width: 100%;
-    background: #25d366;
+    background: #0f172a;
     color: #fff;
     padding: 11px;
     border: none;
@@ -348,21 +369,13 @@ form input, form select, form textarea {
     margin-top: 16px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 }
 
-.btn-submit {
-    width: 100%;
-    background: #0f172a;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-weight: bold;
+.btn-confirm-order {
+    background: #25d366;
 }

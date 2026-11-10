@@ -1,222 +1,220 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl" class="notranslate">
+<html lang="ku" dir="rtl" class="notranslate" translate="no">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
-    <title id="pageTitle">مۆڵ و بازاڕێ ئۆنلاین</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بازاڕێ کوردستانێ</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- سەرێ ئەپی -->
+    <!-- سەرێ شاشەی (Header) -->
     <header class="app-header">
-        <div class="logo">
-            <h2 id="txtLogo">بازاڕێ مە <span class="badge">Mall</span></h2>
+        <div class="top-row">
+            <div class="brand">
+                <span class="logo-text" id="t_brand">بازاڕ</span>
+                <span class="kurd-flag-badge">
+                    <svg viewBox="0 0 900 600" class="flag-svg">
+                        <rect width="900" height="200" fill="#E42227"/>
+                        <rect y="200" width="900" height="200" fill="#FFFFFF"/>
+                        <rect y="400" width="900" height="200" fill="#0B7C3E"/>
+                        <circle cx="450" cy="300" r="75" fill="#FEBF0F"/>
+                    </svg>
+                </span>
+            </div>
+
+            <!-- دوگمەیا جهێ گەهاندنێ -->
+            <button class="location-btn" onclick="openLocationModal()">
+                <i class="fa-solid fa-location-dot"></i>
+                <span id="currentLocationText">دهۆک - ناوەند</span>
+                <i class="fa-solid fa-chevron-down arrow"></i>
+            </button>
+
+            <!-- ئایکۆنێن سەرەکی: زمان، دوکان، سەلک -->
+            <div class="header-actions">
+                <button class="rent-store-btn" onclick="rentStoreWhatsApp()" title="کرێکرنا دوکانێ">
+                    <i class="fa-solid fa-store"></i>
+                    <span id="t_rentHeader">کرێکرنا دوکانێ</span>
+                </button>
+                <button class="icon-btn" onclick="openLanguageModal()" title="زمان">
+                    <i class="fa-solid fa-globe"></i>
+                </button>
+                <button class="icon-btn cart-icon-btn" onclick="openCart()" title="سەبەتە">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cartCountBadge" class="badge">0</span>
+                </button>
+            </div>
         </div>
-        <div class="header-actions">
-            <!-- دوگمەیا هەلبژارتنا زمانی ب دەست لێدانا ئێکسەر -->
-            <select id="langSelect" class="lang-dropdown">
-                <option value="badini">بادینی</option>
-                <option value="sorani">سۆرانی</option>
-                <option value="ar">عربي</option>
-                <option value="en">English</option>
-            </select>
 
-            <!-- سەلک -->
-            <button id="openCartBtn" class="btn-cart" title="Cart">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cartCountBadge" class="cart-badge">0</span>
-            </button>
+        <!-- سندوقا لێگەڕیانێ -->
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ل کاڵا یان دوکانەکێ بگەڕی..." onkeyup="filterProducts()">
+        </div>
 
-            <!-- هەژمار -->
-            <button id="userProfileBtn" class="btn-profile">
-                <img id="headerUserAvatar" src="" style="display: none;" class="header-avatar" alt="Avatar">
-                <i id="headerUserIcon" class="fa-solid fa-user"></i>
-                <span id="userProfileText">هەژمار</span>
-            </button>
-
-            <!-- ئەدمین -->
-            <button id="adminToggleBtn" class="btn-admin" title="Admin">
-                <i class="fa-solid fa-user-shield"></i>
-            </button>
-
-            <!-- زێدەکرن -->
-            <button id="openAddModalBtn" class="btn-add" title="Add">
-                <i class="fa-solid fa-plus"></i>
-            </button>
+        <!-- فلتەرێ ڕەگەزی -->
+        <div class="gender-pills">
+            <button class="pill active" id="pill_all" onclick="setGenderFilter('all', this)">هەمی</button>
+            <button class="pill" id="pill_women" onclick="setGenderFilter('women', this)">👩 کچان</button>
+            <button class="pill" id="pill_men" onclick="setGenderFilter('men', this)">👨 کوڕان</button>
+            <button class="pill" id="pill_kids" onclick="setGenderFilter('kids', this)">👶 زارۆکان</button>
         </div>
     </header>
 
-    <!-- بانەرا کرێکرنا دوکانێ -->
-    <section class="rent-banner">
-        <div class="banner-text">
-            <h4 id="txtBannerTitle"><i class="fa-solid fa-shop"></i> تە دڤێت کەلپەلێن خۆ بفرۆشی؟</h4>
-            <p id="txtBannerDesc">دوکانا خۆ نوکە د ئەپی دا کرێ بکە و بەرهەمێن خۆ نیشانی هەزاران کڕیاران بدە.</p>
-        </div>
-        <a id="rentShopBtn" href="#" target="_blank" class="btn-rent">
-            <i class="fa-brands fa-whatsapp"></i> <span id="txtRentBtn">کرێکرنا دوکانێ</span>
-        </a>
-    </section>
+    <main class="app-body">
+        <!-- بازنەیێن پۆلێنێن بازاڕی -->
+        <section class="categories-scroll" id="categoriesBar"></section>
 
-    <!-- کۆنترۆڵ و فلتەر -->
-    <section class="controls">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="ل چ بەرهەمی یان دوکانەکێ دگەڕی؟">
-        </div>
+        <!-- تۆڕا بەرهەمان / شاشەیا مۆڵا نوی یا ڤالا -->
+        <section class="products-grid" id="productsContainer"></section>
+    </main>
 
-        <div class="filter-section-title" id="txtStoresTitle">دوکانێن پشکدار:</div>
-        <div class="store-tabs" id="storeTabs">
-            <button class="store-btn active" data-store="all" id="btnAllStores">هەمی دوکان</button>
-        </div>
+    <!-- بارێ جێگیر یێ خوارێ (Bottom Nav) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" id="navHome" onclick="switchTab('home')">
+            <i class="fa-solid fa-house"></i>
+            <span id="t_navHome">سەرەکی</span>
+        </button>
+        <button class="nav-item" id="navCategories" onclick="switchTab('categories')">
+            <i class="fa-solid fa-border-all"></i>
+            <span id="t_navCategories">پۆلێنەکان</span>
+        </button>
+        <button class="nav-item" id="navCart" onclick="openCart()">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="t_navCart">سەبەتە</span>
+        </button>
+        <button class="nav-item" id="navProfile" onclick="switchTab('profile')">
+            <i class="fa-solid fa-user"></i>
+            <span id="t_navProfile">پرۆفایل</span>
+        </button>
+    </nav>
 
-        <div class="filter-section-title" id="txtCategoriesTitle" style="margin-top: 10px;">جۆرێ بەرهەمی:</div>
-        <div class="category-tabs">
-            <button class="cat-btn active" data-category="all" id="catAll">هەمی</button>
-            <button class="cat-btn" data-category="clothes" id="catClothes">جلوبەرگ</button>
-            <button class="cat-btn" data-category="shoes" id="catShoes">پێلاڤ</button>
-            <button class="cat-btn" data-category="electronics" id="catElectronics">ئەلکترۆنیات</button>
-            <button class="cat-btn" data-category="other" id="catOther">یێن دی</button>
-        </div>
-    </section>
-
-    <!-- بەرهەم -->
-    <main class="products-container" id="productsGrid"></main>
-
-    <!-- مۆداڵا سەلکێ -->
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeCartModalBtn">&times;</span>
-            <div class="cart-header">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <h3 id="txtCartTitle">سەلکا کڕینێ یا تە</h3>
+    <!-- پەنجەرەیا زمانان (Language Modal) -->
+    <div class="modal-overlay" id="languageModal">
+        <div class="modal-sheet">
+            <div class="modal-header">
+                <h3 id="t_langModalTitle">زمانێ بەرنامەی هەڵبژێرە</h3>
+                <button class="close-btn" onclick="closeLanguageModal()">&times;</button>
             </div>
-            
-            <div id="cartItemsList" class="cart-items-list"></div>
-
-            <div class="cart-footer" id="cartFooterSection" style="display: none;">
-                <div class="cart-total-box">
-                    <span id="txtTotalCountLabel">کۆمێ گشتی:</span>
-                    <strong id="cartTotalItemsCount">0</strong>
-                </div>
-                <button id="checkoutCartBtn" class="btn-confirm-order">
-                    <i class="fa-brands fa-whatsapp"></i> <span id="txtOrderAllBtn">داواکرنا هەمییان ب WhatsApp</span>
+            <div class="lang-list" id="languageOptionsList">
+                <button class="lang-option active" data-lang="badini" onclick="selectLanguage('badini')">
+                    <span>Kurdish (Badini)</span>
+                    <i class="fa-solid fa-check checkmark"></i>
+                </button>
+                <button class="lang-option" data-lang="sorani" onclick="selectLanguage('sorani')">
+                    <span>Kurdish (Sorani)</span>
+                    <i class="fa-solid fa-check checkmark"></i>
+                </button>
+                <button class="lang-option" data-lang="arabic" onclick="selectLanguage('arabic')">
+                    <span>العربية</span>
+                    <i class="fa-solid fa-check checkmark"></i>
+                </button>
+                <button class="lang-option" data-lang="english" onclick="selectLanguage('english')">
+                    <span>English</span>
+                    <i class="fa-solid fa-check checkmark"></i>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- مۆداڵا ناڤنیشان و کڕینێ -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeOrderModalBtn">&times;</span>
-            <div class="order-header">
-                <i class="fa-solid fa-truck-fast"></i>
-                <h3 id="txtOrderHeaderTitle">زانیاریێن گەیاندن و کڕینێ</h3>
+    <!-- پەنجەرەیا پۆلێنان -->
+    <div class="modal-overlay" id="categoriesModal">
+        <div class="modal-sheet cat-sheet">
+            <div class="modal-header">
+                <h3 id="t_allCatsTitle">هەمی بەش و پۆلێنێن بازاڕی</h3>
+                <button class="close-btn" onclick="closeCategoriesModal()">&times;</button>
             </div>
-            
-            <div class="product-summary" id="orderProductSummary"></div>
-
-            <form id="orderForm">
-                <label id="lblCustName">ناڤێ کڕیاری:</label>
-                <input type="text" id="custName" required>
-
-                <label id="lblCustPhone">ژمارەیا تەلەفۆنێ (WhatsApp):</label>
-                <input type="tel" id="custPhone" required>
-
-                <label id="lblCustCity">باژێڕ / دەڤەر:</label>
-                <input type="text" id="custCity" required>
-
-                <label id="lblCustAddress">ناڤنیشانێ گەیاندنێ:</label>
-                <textarea id="custAddress" rows="2" required></textarea>
-
-                <button type="submit" class="btn-confirm-order">
-                    <i class="fa-brands fa-whatsapp"></i> <span id="txtSendOrderBtn">ناردنا داواکاریێ ب WhatsApp</span>
-                </button>
-            </form>
+            <div class="all-categories-list" id="allCategoriesList"></div>
         </div>
     </div>
 
-    <!-- مۆداڵا پرۆفایلێ -->
-    <div class="modal" id="profileModal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeProfileModalBtn">&times;</span>
-            <div class="profile-header">
-                <div class="avatar-wrapper">
-                    <img id="profileAvatarPreview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200" alt="Avatar">
-                    <label for="profileImageInput" class="avatar-edit-badge" title="گۆڕینا وێنەی">
-                        <i class="fa-solid fa-camera"></i>
-                    </label>
-                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
-                </div>
-                <h3 id="txtProfileTitle" style="margin-top: 10px;">پرۆفایلێ من</h3>
+    <!-- پەنجەرەیا پرۆفایل و دوکانداران -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-sheet profile-sheet">
+            <div class="modal-header">
+                <h3 id="t_profileTitle">هەژمار و پرۆفایل</h3>
+                <button class="close-btn" onclick="closeProfileModal()">&times;</button>
             </div>
+            <div class="profile-content">
+                <div class="profile-card-top">
+                    <div class="avatar-circle"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <h4 id="t_welcome">بەخێربێی بۆ بازاڕێ کوردستانێ</h4>
+                        <p id="profileCityText">دهۆک - ناوەند، کوردستان</p>
+                    </div>
+                </div>
 
-            <form id="profileForm">
-                <label id="lblProfName">ناڤێ تە یێ تەواو:</label>
-                <input type="text" id="profName" required>
+                <!-- بەشێ کرێکرنا دوکانێ -->
+                <div class="vendor-box">
+                    <div class="vendor-info">
+                        <strong id="t_vendorQ">دوکانداری؟</strong>
+                        <p id="t_vendorSub">دوکانا خۆ ل بازاڕی کرێ بکە و کاڵایێن خۆ بفرۆشە</p>
+                    </div>
+                    <button class="vendor-btn" onclick="rentStoreWhatsApp()">
+                        <i class="fa-brands fa-whatsapp"></i> <span id="t_vendorBtn">کرێکرنا دوکانێ ب واتسئەپێ</span>
+                    </button>
+                </div>
 
-                <label id="lblProfEmail">ئیمەیل (Email):</label>
-                <input type="email" id="profEmail" required>
-
-                <label id="lblProfPhone">ژمارەیا مۆبایلێ:</label>
-                <input type="tel" id="profPhone" required>
-
-                <label id="lblProfCity">شار:</label>
-                <input type="text" id="profCity" required>
-
-                <label id="lblProfAddress">ناڤنیشان:</label>
-                <textarea id="profAddress" rows="2" required></textarea>
-
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-floppy-disk"></i> <span id="txtSaveProfileBtn">پاشەکەوتکرن</span>
-                </button>
-            </form>
+                <div class="profile-links">
+                    <button class="profile-link-item" onclick="openLanguageModal()">
+                        <i class="fa-solid fa-globe"></i> <span id="t_changeLang">گۆڕینا زمانی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                    </button>
+                    <button class="profile-link-item" onclick="openLocationModal(); closeProfileModal();">
+                        <i class="fa-solid fa-map-location-dot"></i> <span id="t_changeLoc">گۆڕینا باژێڕ و جهی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                    </button>
+                    <button class="profile-link-item" onclick="contactSupportWhatsApp()">
+                        <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> <span id="t_support">پشتیڤانی و پەیوەندی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- مۆداڵا زێدەکرنا کاڵایێ نوی -->
-    <div class="modal" id="addModal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeModalBtn">&times;</span>
-            <h3 id="txtAddModalTitle">زێدەکرنا کاڵایێ نوی</h3>
-            <form id="productForm">
-                <label id="lblProdStore">ناڤێ دوکانا تە:</label>
-                <input type="text" id="prodStore" required>
+    <!-- پەنجەرەیا جهێ گەهاندنێ -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="modal-sheet">
+            <div class="modal-header">
+                <h3 id="t_locationModalTitle">دەستنیشانکرنا جهێ گەهاندنێ</h3>
+                <button class="close-btn" onclick="closeLocationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label id="t_lblGov">پارێزگەهـ:</label>
+                <div class="chips-group" id="governorateChips"></div>
+                <label id="t_lblDist">قەزا / دەڤەر:</label>
+                <div class="chips-group" id="districtChips"></div>
+            </div>
+            <button class="primary-btn" id="t_confirmLocBtn" onclick="confirmLocation()">پەسەندکرن</button>
+        </div>
+    </div>
 
-                <label id="lblProdTitle">ناڤێ بەرهەمی:</label>
-                <input type="text" id="prodTitle" required>
-
-                <label id="lblProdCat">پۆلێن:</label>
-                <select id="prodCategory" required>
-                    <option value="clothes" id="optClothes">جلوبەرگ</option>
-                    <option value="shoes" id="optShoes">پێلاڤ</option>
-                    <option value="electronics" id="optElectronics">ئەلکترۆنیات</option>
-                    <option value="other" id="optOther">یێن دی</option>
-                </select>
-
-                <label id="lblProdPrice">نرخ:</label>
-                <input type="text" id="prodPrice" required>
-
-                <label id="lblProdImage">وێنەیێ بەرهەمی:</label>
-                <input type="file" id="prodImageFile" accept="image/*" required>
-                <div id="imagePreviewContainer" style="display: none; margin-top: 8px;">
-                    <img id="imagePreview" src="" alt="Preview" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
+    <!-- پەنجەرەیا سەبەتێ (Cart) -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-sheet cart-sheet">
+            <div class="modal-header">
+                <h3><span id="t_cartTitle">سەبەتەیا من</span> (<span id="cartTotalItems">0</span> <span id="t_cartUnit">کاڵا</span>)</h3>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div class="cart-items-list" id="cartItemsList"></div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span id="t_subtotal">کۆژمێ کاڵایان:</span>
+                    <span id="subtotalPrice">0 د.ع</span>
                 </div>
-
-                <label id="lblProdPhone">ژمارەیا WhatsApp یا دوکاندارێ:</label>
-                <input type="tel" id="prodPhone" required>
-
-                <label id="lblProdCity">شار / جهێ دوکانێ:</label>
-                <input type="text" id="prodCity" required>
-
-                <button type="submit" class="btn-submit">
-                    <span id="txtPublishBtn">بەلاڤکرنا بەرهەمی</span>
+                <div class="summary-row">
+                    <span id="t_delivery">کرێیا گەهاندنێ:</span>
+                    <span id="deliveryFee">3,000 د.ع</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span id="t_total">کۆژمێ گشتی:</span>
+                    <span id="finalTotalPrice">0 د.ع</span>
+                </div>
+                <button class="whatsapp-checkout-btn" onclick="checkoutWhatsApp()">
+                    <i class="fa-brands fa-whatsapp"></i> <span id="t_checkoutBtn">تەمامکرنا داواکاریێ ب واتسئەپێ</span>
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 

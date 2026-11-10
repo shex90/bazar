@@ -7,6 +7,10 @@
     <title>بازاڕێ کوردستانێ</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- کتێبخانەیا سەردەمیانە و بێ کێشە یا Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -25,12 +29,14 @@
                 </span>
             </div>
 
+            <!-- دوگمەیا جهی -->
             <button class="location-btn" onclick="openLocationModal()">
                 <i class="fa-solid fa-location-dot"></i>
                 <span id="currentLocationText">دهۆک - ناوەند</span>
                 <i class="fa-solid fa-chevron-down arrow"></i>
             </button>
 
+            <!-- ئایکۆنێن سەرەکی -->
             <div class="header-actions">
                 <button class="rent-store-btn" onclick="rentStoreWhatsApp()" title="کرێکرنا دوکانێ">
                     <i class="fa-solid fa-store"></i>
@@ -60,6 +66,7 @@
     </header>
 
     <main class="app-body">
+        <!-- بازنەیێن پۆلێنان -->
         <section class="categories-scroll" id="categoriesBar">
             <div class="cat-circle-item active" onclick="selectCategory('all', this)">
                 <div class="cat-circle-icon">✨</div>
@@ -91,19 +98,17 @@
             </div>
         </section>
 
+        <!-- کاڵایێن بازاڕی (ئۆتۆماتیکی ژ Firebase دهێن) -->
         <section class="products-grid" id="productsContainer">
             <div class="empty-mall-card">
                 <div class="mall-icon">🏬✨</div>
                 <h3 id="t_mallTitle">مۆڵ و بازاڕێ نوی یێ کوردستانێ</h3>
-                <p id="t_mallDesc">ئەڤ بازاڕە نوکە ل قۆناغا دەستپێکێیە! هێشتا دوکان ل ڤێرە نەهاتینە تۆمارکرن.<br><strong>تۆ خودانێ دوکانێ یان بزنسەکی ل کوردستانێ؟</strong></p>
-                <button class="cta-btn" onclick="rentStoreWhatsApp()">
-                    <i class="fa-brands fa-whatsapp"></i> <span id="t_mallBtn">دوکانا خۆ ل ڤێرە کرێ بکە</span>
-                </button>
+                <p id="t_mallDesc">چاڤەڕێ بکە... کاڵا ژ داتابەیسێ بار دبن.</p>
             </div>
         </section>
     </main>
 
-    <!-- Bottom Nav -->
+    <!-- بارێ بنێ شاشەی -->
     <nav class="bottom-nav">
         <button class="nav-item active" id="navHome" onclick="switchTab('home')">
             <i class="fa-solid fa-house"></i>
@@ -123,7 +128,7 @@
         </button>
     </nav>
 
-    <!-- پەنجەرەیا پرۆفایل و ئەکاونتێ پیشکەفتی -->
+    <!-- پەنجەرەیا پرۆفایل و ئەکاونتێ -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-sheet profile-sheet">
             <div class="modal-header">
@@ -131,12 +136,11 @@
                 <button class="close-btn" onclick="closeProfileModal()">&times;</button>
             </div>
             <div class="profile-content">
-                <!-- بەشێ وێنەیێ پرۆفایلی -->
                 <div class="profile-card-top">
                     <div class="avatar-wrapper">
                         <img id="userAvatarImg" src="" style="display:none;" alt="Avatar">
                         <div id="defaultAvatarIcon" class="avatar-circle"><i class="fa-solid fa-user"></i></div>
-                        <label for="avatarUploadInput" class="avatar-edit-badge" title="گۆڕینا وێنەی">
+                        <label for="avatarUploadInput" class="avatar-edit-badge">
                             <i class="fa-solid fa-camera"></i>
                         </label>
                         <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
@@ -147,33 +151,41 @@
                     </div>
                 </div>
 
-                <!-- فۆڕما داخڵکرنا ناڤ، ئیمەیڵ، پاسۆرد و جهێ GPS -->
+                <!-- بەشێ تایبەت ب کلیلێ یا دوکانداران -->
+                <div style="background:#e0f2fe; border:1.5px solid #0284c7; border-radius:14px; padding:12px; margin-bottom:14px; text-align:center;">
+                    <div style="font-weight:800; font-size:13.5px; color:#0369a1; margin-bottom:4px;">🔑 خودانێ دوکانێ ی؟</div>
+                    <p style="font-size:11.5px; color:#0c4a6e; margin-bottom:8px;">ب کلیلێ دوکانا خۆ بچۆ ژوور دا کاڵایان دانێی یان بسڕییەوە:</p>
+                    <button onclick="vendorKeyLogin()" style="width:100%; background:#0284c7; color:#fff; border:none; padding:10px; border-radius:8px; font-size:13px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-key"></i> چوونەژوور ب کلیلێ (Vendor Login)
+                    </button>
+                </div>
+
+                <!-- فۆڕما ئەکاونتێ کڕیاری -->
                 <div class="account-form-box">
                     <h5 id="t_accInfoTitle">دروستکرن و پاراستنا ئەکاونتی:</h5>
                     
                     <div class="form-group">
-                        <label id="t_nameLabel"><i class="fa-solid fa-user-pen"></i> ناڤێ تە یێ تەواو:</label>
+                        <label><i class="fa-solid fa-user-pen"></i> ناڤێ تە یێ تەواو:</label>
                         <input type="text" id="userNameInput" placeholder="ناڤێ خۆ بنڤیسە...">
                     </div>
 
                     <div class="form-group">
-                        <label id="t_emailLabel"><i class="fa-solid fa-envelope"></i> ئیمەیڵ (Email):</label>
+                        <label><i class="fa-solid fa-envelope"></i> ئیمەیڵ (Email):</label>
                         <input type="email" id="userEmailInput" placeholder="example@gmail.com">
                     </div>
 
                     <div class="form-group">
-                        <label id="t_phoneLabel"><i class="fa-solid fa-phone"></i> ژمارەیا تەلەفۆنێ (واتسئەپ):</label>
+                        <label><i class="fa-solid fa-phone"></i> ژمارەیا تەلەفۆنێ (واتسئەپ):</label>
                         <input type="tel" id="userPhoneInput" placeholder="0750xxxxxxx">
                     </div>
 
                     <div class="form-group">
-                        <label id="t_passLabel"><i class="fa-solid fa-lock"></i> پاسۆردێ هەژمارێ (Password):</label>
+                        <label><i class="fa-solid fa-lock"></i> پاسۆردێ هەژمارێ (Password):</label>
                         <input type="password" id="userPasswordInput" placeholder="••••••••">
                     </div>
 
-                    <!-- بەشێ دەستنیشانکرنا جهێ GPS ب گووگڵ ماپس -->
                     <div class="form-group gps-group">
-                        <label id="t_gpsLabel"><i class="fa-solid fa-map-location-dot"></i> جهێ گەهاندنێ ب نەخشەی (GPS):</label>
+                        <label><i class="fa-solid fa-map-location-dot"></i> جهێ گەهاندنێ ب نەخشەی (GPS):</label>
                         <button type="button" class="get-gps-btn" id="gpsBtn" onclick="getUserLiveLocation()">
                             <i class="fa-solid fa-crosshairs"></i> <span id="gpsBtnText">دیارکرنا جهێ من ب GPS</span>
                         </button>
@@ -186,27 +198,71 @@
                     </button>
                 </div>
 
-                <!-- بەشێ دوکانداران -->
                 <div class="vendor-box">
                     <div class="vendor-info">
-                        <strong id="t_vendorQ">دوکانداری؟</strong>
-                        <p id="t_vendorSub">دوکانا خۆ ل بازاڕی کرێ بکە و کاڵایێن خۆ بفرۆشە</p>
+                        <strong>دڤێت دوکانێ کرێ بکەی؟</strong>
+                        <p>دوکانا خۆ ل بازاڕی کرێ بکە و کلیلێ وەربگرە</p>
                     </div>
                     <button class="vendor-btn" onclick="rentStoreWhatsApp()">
-                        <i class="fa-brands fa-whatsapp"></i> <span id="t_vendorBtn">کرێکرنا دوکانێ ب واتسئەپێ</span>
+                        <i class="fa-brands fa-whatsapp"></i> <span>کرێکرنا دوکانێ ب واتسئەپێ</span>
                     </button>
                 </div>
 
                 <div class="profile-links">
                     <button class="profile-link-item" onclick="switchLangFromProfile()">
-                        <i class="fa-solid fa-globe"></i> <span id="t_changeLang">گۆڕینا زمانی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                        <i class="fa-solid fa-globe"></i> <span>گۆڕینا زمانی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
                     </button>
                     <button class="profile-link-item" onclick="closeProfileModal(); openLocationModal();">
-                        <i class="fa-solid fa-city"></i> <span id="t_changeLoc">گۆڕینا باژێڕ و قەزایێ</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                        <i class="fa-solid fa-city"></i> <span>گۆڕینا باژێڕ و قەزایێ</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
                     </button>
                     <button class="profile-link-item" onclick="contactSupportWhatsApp()">
-                        <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> <span id="t_support">پشتیڤانی و پەیوەندی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
+                        <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> <span>پشتیڤانی و پەیوەندی</span> <i class="fa-solid fa-chevron-left nav-arrow"></i>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- پەنجەرەیا نوی یا چوارگۆشەیی بۆ دوکانداران (Vendor Grid Dashboard) -->
+    <div class="modal-overlay" id="vendorManagerModal">
+        <div class="modal-sheet vendor-sheet" style="max-height: 92vh; background: #0f172a; color: #fff;">
+            <div class="modal-header" style="border-bottom: 1px solid #1e293b; padding-bottom: 12px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="background:#f27a1a; color:#fff; padding:4px 8px; border-radius:8px; font-size:12px; font-weight:800;">پانێلا فرۆشیاری</span>
+                    <h3 id="vendorStoreTitle" style="font-size:14px; margin:0; color:#f8fafc;">دوکانا وەرزشی</h3>
+                </div>
+                <button class="close-btn" onclick="closeVendorManager()" style="color:#94a3b8;">&times;</button>
+            </div>
+
+            <div class="vendor-body" style="padding: 14px 10px;">
+                <!-- بەشێ چوارگۆشەیی یێ کاڵایان (Vendor Grid) -->
+                <div class="vendor-grid" id="vendorProductsGrid">
+                    <!-- چوارگۆشەیا ئێکێ: تایبەتە ب زێدەکرنا کاڵایێ نوی [+] -->
+                    <div class="grid-card add-card" id="addCardBox">
+                        <input type="file" id="pImgInput" accept="image/*" style="display:none;" onchange="previewProductImage(event)">
+                        
+                        <!-- دەمێ هێشتا وێنە نەهاتییە هەڵبژاردن -->
+                        <div class="upload-trigger" id="uploadPlaceholder" onclick="triggerFileInput()">
+                            <div class="plus-icon"><i class="fa-solid fa-camera"></i></div>
+                            <span class="upload-text">بۆ دەستنیشانکرنی وێنەی<br><small style="color:#f27a1a;">تبلێ ل ڤێرە بدە</small></span>
+                        </div>
+
+                        <!-- دەمێ وێنە دهێتە هەڵبژاردن ئەڤ بەشە دیار دبیت -->
+                        <div class="quick-inputs" id="quickInputsArea" style="display:none;">
+                            <img id="pImgPreview" class="preview-thumb" alt="Preview">
+                            <button class="change-photo-btn" onclick="triggerFileInput()">گۆڕینا وێنەی</button>
+                            
+                            <input type="number" id="pPriceInput" placeholder="بها (IQD) بۆ نموونە: 25000" class="card-input">
+                            <input type="text" id="pSizesInput" placeholder="سایز: 40-44 یان M, L" class="card-input">
+                            <input type="text" id="pTitleInput" placeholder="ناڤێ کاڵایی (ئارەزوومەندانە)" class="card-input">
+
+                            <button class="publish-card-btn" id="publishProductBtn" onclick="uploadProductToCloud()">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> بەلاڤکرن
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- کاڵایێن بەلاڤکری یێن دوکاندارێ ل ڤێرە دێ دەربکەڤن -->
                 </div>
             </div>
         </div>
@@ -216,22 +272,14 @@
     <div class="modal-overlay" id="languageModal">
         <div class="modal-sheet">
             <div class="modal-header">
-                <h3 id="t_langModalTitle">زمانێ بەرنامەی هەڵبژێرە</h3>
+                <h3>زمانێ بەرنامەی</h3>
                 <button class="close-btn" onclick="closeLanguageModal()">&times;</button>
             </div>
             <div class="lang-list">
-                <button class="lang-option active" data-lang="badini" onclick="selectLanguage('badini')">
-                    <span>Kurdish (Badini)</span> <i class="fa-solid fa-check checkmark"></i>
-                </button>
-                <button class="lang-option" data-lang="sorani" onclick="selectLanguage('sorani')">
-                    <span>Kurdish (Sorani)</span> <i class="fa-solid fa-check checkmark"></i>
-                </button>
-                <button class="lang-option" data-lang="arabic" onclick="selectLanguage('arabic')">
-                    <span>العربية</span> <i class="fa-solid fa-check checkmark"></i>
-                </button>
-                <button class="lang-option" data-lang="english" onclick="selectLanguage('english')">
-                    <span>English</span> <i class="fa-solid fa-check checkmark"></i>
-                </button>
+                <button class="lang-option active" data-lang="badini" onclick="selectLanguage('badini')"><span>Kurdish (Badini)</span></button>
+                <button class="lang-option" data-lang="sorani" onclick="selectLanguage('sorani')"><span>Kurdish (Sorani)</span></button>
+                <button class="lang-option" data-lang="arabic" onclick="selectLanguage('arabic')"><span>العربية</span></button>
+                <button class="lang-option" data-lang="english" onclick="selectLanguage('english')"><span>English</span></button>
             </div>
         </div>
     </div>
@@ -240,34 +288,34 @@
     <div class="modal-overlay" id="categoriesModal">
         <div class="modal-sheet">
             <div class="modal-header">
-                <h3 id="t_allCatsTitle">هەمی بەش و پۆلێنێن بازاڕی</h3>
+                <h3>هەمی بەش و پۆلێنێن بازاڕی</h3>
                 <button class="close-btn" onclick="closeCategoriesModal()">&times;</button>
             </div>
             <div class="all-categories-list">
-                <div class="cat-full-row" onclick="selectCategory('shoes')"><span>👟</span><span style="flex-grow:1; text-align:inherit;">پێلاڤ و وەرزش</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
-                <div class="cat-full-row" onclick="selectCategory('flowers')"><span>💐</span><span style="flex-grow:1; text-align:inherit;">گوڵ و دیاری</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
-                <div class="cat-full-row" onclick="selectCategory('beauty')"><span>💄</span><span style="flex-grow:1; text-align:inherit;">جوانکاری و عەتر</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
-                <div class="cat-full-row" onclick="selectCategory('home')"><span>🏠</span><span style="flex-grow:1; text-align:inherit;">ناڤماڵ</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
-                <div class="cat-full-row" onclick="selectCategory('sweets')"><span>🍫</span><span style="flex-grow:1; text-align:inherit;">شیریناهی</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
-                <div class="cat-full-row" onclick="selectCategory('fashion')"><span>👗</span><span style="flex-grow:1; text-align:inherit;">جلوبەرگ</span><i class="fa-solid fa-chevron-left nav-arrow"></i></div>
+                <div class="cat-full-row" onclick="selectCategory('shoes')"><span>👟 پێلاڤ و وەرزش</span></div>
+                <div class="cat-full-row" onclick="selectCategory('flowers')"><span>💐 گوڵ و دیاری</span></div>
+                <div class="cat-full-row" onclick="selectCategory('beauty')"><span>💄 جوانکاری و عەتر</span></div>
+                <div class="cat-full-row" onclick="selectCategory('home')"><span>🏠 ناڤماڵ</span></div>
+                <div class="cat-full-row" onclick="selectCategory('sweets')"><span>🍫 شیریناهی</span></div>
+                <div class="cat-full-row" onclick="selectCategory('fashion')"><span>👗 جلوبەرگ</span></div>
             </div>
         </div>
     </div>
 
-    <!-- مۆداڵا باژێڕ و قەزایان -->
+    <!-- مۆداڵا جهی -->
     <div class="modal-overlay" id="locationModal">
         <div class="modal-sheet">
             <div class="modal-header">
-                <h3 id="t_locationModalTitle">دەستنیشانکرنا جهێ گەهاندنێ</h3>
+                <h3>دەستنیشانکرنا جهێ گەهاندنێ</h3>
                 <button class="close-btn" onclick="closeLocationModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <label id="t_lblGov">پارێزگەهـ:</label>
+                <label>پارێزگەهـ:</label>
                 <div class="chips-group" id="governorateChips"></div>
-                <label id="t_lblDist">قەزا / دەڤەر:</label>
+                <label>قەزا / دەڤەر:</label>
                 <div class="chips-group" id="districtChips"></div>
             </div>
-            <button class="primary-btn" id="t_confirmLocBtn" onclick="confirmLocation()">پەسەندکرن</button>
+            <button class="primary-btn" onclick="confirmLocation()">پەسەندکرن</button>
         </div>
     </div>
 
@@ -275,28 +323,11 @@
     <div class="modal-overlay" id="cartModal">
         <div class="modal-sheet cart-sheet">
             <div class="modal-header">
-                <h3><span id="t_cartTitle">سەبەتەیا من</span> (<span id="cartTotalItems">0</span> <span id="t_cartUnit">کاڵا</span>)</h3>
+                <h3>سەبەتەیا من</h3>
                 <button class="close-btn" onclick="closeCart()">&times;</button>
             </div>
             <div class="cart-items-list" id="cartItemsList">
-                <div style="text-align:center; padding:20px; color:#888;" id="t_emptyCartMsg">سەبەتەیا تە یا ڤالایە!</div>
-            </div>
-            <div class="cart-summary">
-                <div class="summary-row">
-                    <span id="t_subtotal">کۆژمێ کاڵایان:</span>
-                    <span id="subtotalPrice">0 د.ع</span>
-                </div>
-                <div class="summary-row">
-                    <span id="t_delivery">کرێیا گەهاندنێ:</span>
-                    <span id="deliveryFee">0 د.ع</span>
-                </div>
-                <div class="summary-row total-row">
-                    <span id="t_total">کۆژمێ گشتی:</span>
-                    <span id="finalTotalPrice">0 د.ع</span>
-                </div>
-                <button class="whatsapp-checkout-btn" onclick="checkoutWhatsApp()">
-                    <i class="fa-brands fa-whatsapp"></i> <span id="t_checkoutBtn">تەمامکرنا داواکاریێ ب واتسئەپێ</span>
-                </button>
+                <div style="text-align:center; padding:20px; color:#888;">سەبەتەیا تە یا ڤالایە!</div>
             </div>
         </div>
     </div>

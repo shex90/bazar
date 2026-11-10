@@ -1,134 +1,255 @@
-/* ژمارەیا واتسئەپێ */
-const ADMIN_WHATSAPP_NUMBER = "9647504799202"; 
+/* ========================================================
+   گرێدانا ڕاستەوخۆ یا داتابەیسا Firebase
+======================================================== */
+const firebaseConfig = {
+    apiKey: "AIzaSyDhz6711dI7pfD53UaK9-GSQ27cGLAY274",
+    authDomain: "bazar-kurdistan.firebaseapp.com",
+    projectId: "bazar-kurdistan",
+    storageBucket: "bazar-kurdistan.firebasestorage.app",
+    messagingSenderId: "932431440393",
+    appId: "1:932431440393:web:a486807e5784b8686726d8",
+    measurementId: "G-PMD00MRVGV"
+};
 
-function safeSet(id, text) {
-    const el = document.getElementById(id);
-    if (el) el.innerText = text;
-}
-
-function safeHTML(id, html) {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = html;
-}
-
-/* فەرهەنگا زمانی */
-const translations = {
-    badini: {
-        dir: "rtl",
-        brand: "بازاڕ",
-        rentHeader: "کرێکرنا دوکانێ",
-        search: "ل کاڵا یان دوکانەکێ بگەڕی...",
-        pill_all: "هەمی", pill_women: "👩 کچان", pill_men: "👨 کوڕان", pill_kids: "👶 زارۆکان",
-        navHome: "سەرەکی", navCategories: "پۆلێنەکان", navCart: "سەبەتە", navProfile: "پرۆفایل",
-        mallTitle: "مۆڵ و بازاڕێ نوی یێ کوردستانێ",
-        mallDesc: "ئەڤ بازاڕە نوکە ل قۆناغا دەستپێکێیە! هێشتا دوکان ل ڤێرە نەهاتینە تۆمارکرن.<br><strong>تۆ خودانێ دوکانێ یان بزنسەکی ل کوردستانێ؟</strong>",
-        mallBtn: "دوکانا خۆ ل ڤێرە کرێ بکە",
-        cartTitle: "سەبەتەیا من", cartUnit: "کاڵا", emptyCart: "سەبەتەیا تە یا ڤالایە!",
-        saveSuccess: "زانیاری و هەژمار ب سەرکەفتی هاتنە پاراستن!",
-        cat_all: "هەمی", cat_shoes: "پێلاڤ و وەرزش", cat_flowers: "گوڵ و دیاری",
-        cat_beauty: "جوانکاری و عەتر", cat_home: "ناڤماڵ", cat_sweets: "شیریناهی", cat_fashion: "جلوبەرگ"
-    },
-    sorani: {
-        dir: "rtl",
-        brand: "بازاڕ",
-        rentHeader: "کرێکردنی دوکان",
-        search: "بگەڕێ بۆ کاڵا یان فرۆشگا...",
-        pill_all: "هەموو", pill_women: "👩 خانمان", pill_men: "👨 پیاوان", pill_kids: "👶 منداڵان",
-        navHome: "سەرەکی", navCategories: "پۆلێنەکان", navCart: "سەبەتە", navProfile: "پرۆفایل",
-        mallTitle: "مۆڵ و بازاڕی نوێی کوردستان",
-        mallDesc: "ئەم بازاڕە لە قۆناغی دەستپێکدایە! هێشتا دوکانەکان لێرە تۆمار نەکراون.<br><strong>تۆ خاوەنی فرۆشگا یان بزنسێکیت لە کوردستان؟</strong>",
-        mallBtn: "دوکانەکەت لێرە کرێ بکە",
-        cartTitle: "سەبەتەکەم", cartUnit: "کاڵا", emptyCart: "سەبەتەکەت بەتاڵە!",
-        saveSuccess: "زانیاری و هەژمار پاشەکەوت کران!",
-        cat_all: "هەموو", cat_shoes: "پێڵاو و وەرزش", cat_flowers: "گوڵ و دیاری",
-        cat_beauty: "جوانکاری و بۆن", cat_home: "ماڵ و کەلوپەل", cat_sweets: "شیرینی", cat_fashion: "جلوبەرگ"
-    },
-    arabic: {
-        dir: "rtl",
-        brand: "بازار",
-        rentHeader: "استئجار متجر",
-        search: "ابحث عن منتج أو متجر...",
-        pill_all: "الكل", pill_women: "👩 نساء", pill_men: "👨 رجال", pill_kids: "👶 أطفال",
-        navHome: "الرئيسية", navCategories: "الأقسام", navCart: "السلة", navProfile: "حسابي",
-        mallTitle: "سوق ومول كوردستان الجديد",
-        mallDesc: "هذا البازار في مرحلة الإطلاق الأولية! لم يتم إدراج المتاجر بعد.<br><strong>هل أنت صاحب متجر أو مشروع تجاري في كوردستان؟</strong>",
-        mallBtn: "استأجر متجرك وابدأ البيع هنا",
-        cartTitle: "سلتي", cartUnit: "منتجات", emptyCart: "سلة التسوق فارغة!",
-        saveSuccess: "تم حفظ البيانات والحساب بنجاح!",
-        cat_all: "الكل", cat_shoes: "أحذية ورياضة", cat_flowers: "زهور وهدايا",
-        cat_beauty: "تجميل وعطور", cat_home: "مستلزمات منزلية", cat_sweets: "حلويات ومكسرات", cat_fashion: "أزياء وملابس"
-    },
-    english: {
-        dir: "ltr",
-        brand: "Bazar",
-        rentHeader: "Rent Store",
-        search: "Search products or stores...",
-        pill_all: "All", pill_women: "👩 Women", pill_men: "👨 Men", pill_kids: "👶 Kids",
-        navHome: "Home", navCategories: "Categories", navCart: "Cart", navProfile: "Profile",
-        mallTitle: "Kurdistan Grand Online Bazar",
-        mallDesc: "This marketplace is brand new! Stores have not listed their products yet.<br><strong>Are you a business or store owner in Kurdistan?</strong>",
-        mallBtn: "Rent Your Store Space Here",
-        cartTitle: "My Cart", cartUnit: "items", emptyCart: "Your cart is empty!",
-        saveSuccess: "Account details saved successfully!",
-        cat_all: "All", cat_shoes: "Shoes & Sports", cat_flowers: "Flowers & Gifts",
-        cat_beauty: "Beauty & Perfume", cat_home: "Home Living", cat_sweets: "Sweets & Nuts", cat_fashion: "Fashion & Wear"
+let db = null;
+try {
+    if (typeof firebase !== "undefined") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
     }
+} catch(e) {
+    console.error("Firebase Error:", e);
+}
+
+const ADMIN_WHATSAPP_NUMBER = "9647504799202";
+
+/* کلیل و کۆدێن دوکانداران (تۆ ل ڤێرە کلیلێن نوی زێدە دکەی) */
+const STORE_ACCESS_KEYS = {
+    "101": { id: "store_1", name: "دوکانا وەرزشی" },
+    "102": { id: "store_2", name: "کۆگەها جلوبەرگان" },
+    "103": { id: "store_3", name: "گوڵ و دیاریێن کوردستانێ" }
 };
 
-let currentLang = "badini";
+let activeVendor = null;
+let currentProductBase64 = "";
+let allLiveProducts = [];
 
-/* پارێزگەهـ */
-const kurdistanLocations = {
-    duhok: { name: "دهۆک", districts: ["ناوەند", "زاخۆ", "سێمێل", "ئامێدی", "ئاکرێ", "شێخان", "بەردەڕەش"] },
-    erbil: { name: "هەولێر", districts: ["ناوەند", "سۆران", "شەقڵاوە", "کۆیە", "خەبات", "ڕەواندوز"] },
-    sulaymaniyah: { name: "سلێمانی", districts: ["ناوەند", "ڕانیە", "قەڵادزێ", "کەلار", "دەربەندیخان", "دوکان"] },
-    halabja: { name: "هەڵەبجە", districts: ["ناوەند", "شارەزوور", "سەیدسادق", "خورماڵ", "بیارە"] }
-};
-
-let selectedGov = "duhok";
-let selectedDist = "ناوەند";
-let userAvatarBase64 = "";
+function safeSet(id, text) { const el = document.getElementById(id); if (el) el.innerText = text; }
 
 /* ========================================================
-   وەرگرتنا جهێ دەقیق یێ GPS ب نەخشەی (Live Location)
+   بەشێ چوارگۆشەیی یێ دوکانداران (Vendor Grid Panel)
 ======================================================== */
-function getUserLiveLocation() {
-    const statusBox = document.getElementById("gpsStatusMessage");
-    const gpsBtnText = document.getElementById("gpsBtnText");
+function vendorKeyLogin() {
+    const key = prompt("تکایە کلیلێ تایبەت یێ دوکانا خۆ بنڤیسە:");
+    if (!key) return;
 
-    if (!navigator.geolocation) {
-        statusBox.className = "gps-status error";
-        statusBox.innerText = "مۆبایلا تە پشتگیرییا GPS ناکەت!";
+    if (STORE_ACCESS_KEYS[key.trim()]) {
+        activeVendor = STORE_ACCESS_KEYS[key.trim()];
+        safeSet("vendorStoreTitle", `دوکانا: ${activeVendor.name}`);
+        closeProfileModal();
+        document.getElementById("vendorManagerModal").classList.add("open");
+        renderVendorOwnProducts();
+    } else {
+        alert("ئەڤ کلیلە یا خەلەتە! تکایە پەیوەندیێ ب بەڕێوەبەری بکە.");
+    }
+}
+
+function closeVendorManager() {
+    document.getElementById("vendorManagerModal").classList.remove("open");
+}
+
+/* کلیک ل سەر مڕەبەعا دەستپێکێ دکەت دا گەلەری ڤەبیت */
+function triggerFileInput() {
+    document.getElementById("pImgInput").click();
+}
+
+/* دەمێ وێنە دهێتە هەڵبژاردن: بچووککرن و نیشاندان د ناڤ مڕەبەعێ دا */
+function previewProductImage(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const img = new Image();
+            img.src = evt.target.result;
+            img.onload = function() {
+                const canvas = document.createElement("canvas");
+                const MAX_WIDTH = 500;
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                currentProductBase64 = canvas.toDataURL("image/jpeg", 0.75);
+
+                // گۆڕینا مڕەبەعێ بۆ فۆڕما سڤک
+                document.getElementById("uploadPlaceholder").style.display = "none";
+                document.getElementById("quickInputsArea").style.display = "flex";
+                document.getElementById("pImgPreview").src = currentProductBase64;
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+/* بەلاڤکرنا ڕاستەوخۆ بۆ ناو داتابەیسێ */
+function uploadProductToCloud() {
+    if (!activeVendor) return;
+    const price = parseInt(document.getElementById("pPriceInput").value);
+    const size = document.getElementById("pSizesInput").value.trim();
+    const title = document.getElementById("pTitleInput").value.trim() || activeVendor.name;
+
+    if (isNaN(price) || !currentProductBase64) {
+        alert("تکایە وێنە و بهایێ بەرهەمی بنڤیسە!");
         return;
     }
 
-    gpsBtnText.innerText = "لێگەڕیان ل جهێ تە...";
-    statusBox.className = "gps-status";
-    statusBox.innerText = "تکایە دەستووری بدە (Allow Location)...";
+    const btn = document.getElementById("publishProductBtn");
+    btn.innerText = "بەلاڤ دبیت...";
+    btn.disabled = true;
 
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
-            
-            document.getElementById("userGpsCoordinates").value = mapsUrl;
-            gpsBtnText.innerText = "✓ جهێ تە ب سەرکەفتی هاتە دیارکرن";
-            statusBox.className = "gps-status success";
-            statusBox.innerHTML = `✓ نەخشە ئامادەیە: <a href="${mapsUrl}" target="_blank" style="color:#16a34a; text-decoration:underline;">دیتنا جهی</a>`;
-        },
-        (error) => {
-            gpsBtnText.innerText = "دووبارە هەوڵبدە";
-            statusBox.className = "gps-status error";
-            statusBox.innerText = "نەهاتە دیتن! تکایە لۆکەیشنێ (Location) مۆبایلا خۆ ڤەکە.";
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-    );
+    if (!db) {
+        alert("داتابەیس هێشتا نەگەهشتییە!");
+        btn.disabled = false;
+        return;
+    }
+
+    db.collection("products").add({
+        storeId: activeVendor.id,
+        storeName: activeVendor.name,
+        title: title,
+        size: size || "دیارنەکری",
+        price: price,
+        image: currentProductBase64,
+        createdAt: new Date().toISOString()
+    }).then(() => {
+        // ڤەگەڕاندنا مڕەبەعێ بۆ [+] دا بەرهەمێ دویڤدا دانێت
+        document.getElementById("uploadPlaceholder").style.display = "flex";
+        document.getElementById("quickInputsArea").style.display = "none";
+        document.getElementById("pPriceInput").value = "";
+        document.getElementById("pSizesInput").value = "";
+        document.getElementById("pTitleInput").value = "";
+        currentProductBase64 = "";
+    }).catch(err => {
+        alert("خەلەتییەک چێبوو د بەلاڤکرنێ دا!");
+    }).finally(() => {
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> بەلاڤکرن`;
+        btn.disabled = false;
+    });
+}
+
+/* سڕینەوەیا کاڵایی ژ لایێ دوکانداری ڤە */
+function deleteVendorProduct(docId) {
+    if (confirm("ئایا دڵنیای دڤێت ئەڤ بەرهەمە بسڕییەوە؟")) {
+        db.collection("products").doc(docId).delete().then(() => {
+            alert("بەرهەم هاتە سڕینەوە!");
+        });
+    }
+}
+
+/* نیشاندانا مڕەبەعێن کاڵایێن دوکانداری (Grid View) */
+function renderVendorOwnProducts() {
+    if (!activeVendor) return;
+    const grid = document.getElementById("vendorProductsGrid");
+    const addBox = document.getElementById("addCardBox");
+    if (!grid || !addBox) return;
+
+    grid.innerHTML = "";
+    grid.appendChild(addBox);
+
+    const myItems = allLiveProducts.filter(p => p.storeId === activeVendor.id);
+
+    myItems.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "vendor-item-card";
+        card.innerHTML = `
+            <img src="${p.image}">
+            <div class="card-info">
+                <span class="item-price">${p.price.toLocaleString()} IQD</span>
+                <span class="item-size"><i class="fa-solid fa-ruler"></i> سایز: ${p.size || 'گشتی'}</span>
+                <button class="delete-btn" onclick="deleteVendorProduct('${p.id}')">
+                    <i class="fa-solid fa-trash"></i> سڕینەوە
+                </button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
 }
 
 /* ========================================================
-   هەڵبژارتن و گۆڕینا وێنەیێ پرۆفایلی (Photo Upload)
+   وەرگرتنا زندی یا کاڵایان بۆ هەموو کڕیاران (Realtime Mall)
 ======================================================== */
+if (db) {
+    db.collection("products").onSnapshot((snapshot) => {
+        allLiveProducts = [];
+        snapshot.forEach(doc => {
+            allLiveProducts.push({ id: doc.id, ...doc.data() });
+        });
+        renderMainFeed();
+        if (activeVendor) renderVendorOwnProducts();
+    });
+}
+
+function renderMainFeed() {
+    const container = document.getElementById("productsContainer");
+    if (!container) return;
+
+    if (allLiveProducts.length === 0) {
+        container.innerHTML = `
+            <div class="empty-mall-card">
+                <div class="mall-icon">🏬✨</div>
+                <h3>مۆڵ و بازاڕێ نوی یێ کوردستانێ</h3>
+                <p>هێشتا هیچ کاڵایەک نەهاتییە بەلاڤکرن.<br>دوکاندار دشێن ب کلیلێ خۆ بەرهەمان دانێن.</p>
+                <button class="cta-btn" onclick="rentStoreWhatsApp()">
+                    <i class="fa-brands fa-whatsapp"></i> دوکانا خۆ ل ڤێرە کرێ بکە
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = allLiveProducts.map(p => `
+        <div style="background:#fff; border-radius:14px; overflow:hidden; border:1px solid #e2e8f0; padding:10px; box-shadow:0 2px 8px rgba(0,0,0,0.03); margin-bottom:10px;">
+            <img src="${p.image}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">
+            <div style="margin-top:8px;">
+                <span style="font-size:11px; color:#f27a1a; font-weight:800; background:#fff4ec; padding:2px 8px; border-radius:6px;">${p.storeName}</span>
+                <h4 style="font-size:14px; font-weight:700; margin:6px 0 4px; color:#1e293b;">${p.title}</h4>
+                <div style="font-size:14px; font-weight:900; color:#0f172a;">${p.price.toLocaleString()} د.ع</div>
+            </div>
+        </div>
+    `).join("");
+}
+
+/* ========================================================
+   بەشێ ئەکاونت، GPS و لۆکەیشن
+======================================================== */
+let userAvatarBase64 = "";
+
+function getUserLiveLocation() {
+    const statusBox = document.getElementById("gpsStatusMessage");
+    const gpsBtnText = document.getElementById("gpsBtnText");
+    if (!navigator.geolocation) {
+        alert("مۆبایلا تە پشتگیرییا GPS ناکەت!");
+        return;
+    }
+    gpsBtnText.innerText = "لێگەڕیان ل جهێ تە...";
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const url = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            document.getElementById("userGpsCoordinates").value = url;
+            gpsBtnText.innerText = "✓ جهێ نەخشەی هاتە وەرگرتن";
+            statusBox.className = "gps-status success";
+            statusBox.innerHTML = `✓ نەخشە ئامادەیە: <a href="${url}" target="_blank" style="color:#16a34a;">دیتنا جهی</a>`;
+        },
+        () => {
+            gpsBtnText.innerText = "دووبارە هەوڵبدە";
+            statusBox.className = "gps-status error";
+            statusBox.innerText = "نەهاتە دیتن! لۆکەیشنێ مۆبایلێ ڤەکە.";
+        },
+        { enableHighAccuracy: true }
+    );
+}
+
 function handleAvatarUpload(event) {
     const file = event.target.files[0];
     if (file) {
@@ -154,29 +275,14 @@ function showAvatar(src) {
     }
 }
 
-/* ========================================================
-   خەزنکرن و بارکرنا ئەکاونتی د مەمۆریێ دا (LocalStorage)
-======================================================== */
 function saveUserProfile() {
     const name = document.getElementById("userNameInput").value.trim();
-    const email = document.getElementById("userEmailInput").value.trim();
     const phone = document.getElementById("userPhoneInput").value.trim();
-    const password = document.getElementById("userPasswordInput").value.trim();
-    const gpsUrl = document.getElementById("userGpsCoordinates").value;
-
-    const accountData = {
-        name,
-        email,
-        phone,
-        password,
-        gpsUrl,
-        avatar: userAvatarBase64
-    };
-
-    localStorage.setItem("bazar_user_account", JSON.stringify(accountData));
-
+    const email = document.getElementById("userEmailInput").value.trim();
+    const gps = document.getElementById("userGpsCoordinates").value;
+    localStorage.setItem("bazar_user_account", JSON.stringify({ name, phone, email, gps, avatar: userAvatarBase64 }));
     if (name) safeSet("displayUserName", `سڵاو، ${name}`);
-    alert(translations[currentLang].saveSuccess);
+    alert("زانیاری ب سەرکەفتی هاتنە پاراستن!");
 }
 
 function loadUserProfile() {
@@ -188,15 +294,11 @@ function loadUserProfile() {
                 document.getElementById("userNameInput").value = u.name;
                 safeSet("displayUserName", `سڵاو، ${u.name}`);
             }
-            if (u.email) document.getElementById("userEmailInput").value = u.email;
             if (u.phone) document.getElementById("userPhoneInput").value = u.phone;
-            if (u.password) document.getElementById("userPasswordInput").value = u.password;
-            if (u.gpsUrl) {
-                document.getElementById("userGpsCoordinates").value = u.gpsUrl;
-                document.getElementById("gpsBtnText").innerText = "✓ جهێ نەخشەی پاراستییە";
-                const st = document.getElementById("gpsStatusMessage");
-                st.className = "gps-status success";
-                st.innerHTML = `✓ نەخشە ئامادەیە: <a href="${u.gpsUrl}" target="_blank" style="color:#16a34a;">دیتنا جهی</a>`;
+            if (u.email) document.getElementById("userEmailInput").value = u.email;
+            if (u.gps) {
+                document.getElementById("userGpsCoordinates").value = u.gps;
+                safeSet("gpsBtnText", "✓ جهێ نەخشەی پاراستییە");
             }
             if (u.avatar) {
                 userAvatarBase64 = u.avatar;
@@ -207,119 +309,17 @@ function loadUserProfile() {
 }
 
 /* ========================================================
-   واتسئەپ: کرێکرنا دوکانێ دگەل لینکا نەخشەی (GPS)
+   بەشێ پارێزگەهان و ناڤچەیان
 ======================================================== */
-function rentStoreWhatsApp() {
-    const govName = kurdistanLocations[selectedGov].name;
-    let name = "";
-    let phone = "";
-    let email = "";
-    let gpsLink = "";
+const kurdistanLocations = {
+    duhok: { name: "دهۆک", districts: ["ناوەند", "زاخۆ", "سێمێل", "ئامێدی", "ئاکرێ", "شێخان", "بەردەڕەش"] },
+    erbil: { name: "هەولێر", districts: ["ناوەند", "سۆران", "شەقڵاوە", "کۆیە", "خەبات"] },
+    sulaymaniyah: { name: "سلێمانی", districts: ["ناوەند", "ڕانیە", "قەڵادزێ", "کەلار"] },
+    halabja: { name: "هەڵەبجە", districts: ["ناوەند", "شارەزوور", "خورماڵ"] }
+};
 
-    try {
-        const saved = localStorage.getItem("bazar_user_account");
-        if (saved) {
-            const user = JSON.parse(saved);
-            name = user.name || "";
-            phone = user.phone || "";
-            email = user.email || "";
-            gpsLink = user.gpsUrl || "";
-        }
-    } catch(e) {}
-
-    let msg = `🛒 *داواکارییا کرێکرنا دوکانێ (بازاڕ)*\n`;
-    msg += `• ناڤ: ${name || 'نەهاتییە دیارکرن'}\n`;
-    msg += `• ژمارە: ${phone || 'نەهاتییە دیارکرن'}\n`;
-    if (email) msg += `• ئیمەیڵ: ${email}\n`;
-    msg += `• باژێڕ: ${govName} - ${selectedDist}\n`;
-    if (gpsLink) {
-        msg += `📍 *جهێ نەخشەی (Google Maps):*\n${gpsLink}\n`;
-    }
-    msg += `--------------------------------\n`;
-    msg += `سڵاو، دڤێت دوکانا خۆ د ئەپێ بازاڕێ دا کرێ بکەم. تکایە مەرج و هوورکارییان بۆ من بنێرە.`;
-
-    window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
-/* ========================================================
-   بەشێ زمان، سەلک و ناڤبڕ
-======================================================== */
-function openLanguageModal() { document.getElementById("languageModal").classList.add("open"); }
-function closeLanguageModal() { document.getElementById("languageModal").classList.remove("open"); }
-function switchLangFromProfile() { closeProfileModal(); openLanguageModal(); }
-
-function selectLanguage(lang) {
-    if (!translations[lang]) return;
-    currentLang = lang;
-    const t = translations[lang];
-
-    document.documentElement.dir = t.dir;
-    safeSet("t_brand", t.brand);
-    safeSet("t_rentHeader", t.rentHeader);
-    const search = document.getElementById("searchInput");
-    if (search) search.placeholder = t.search;
-
-    safeSet("pill_all", t.pill_all);
-    safeSet("pill_women", t.pill_women);
-    safeSet("pill_men", t.pill_men);
-    safeSet("pill_kids", t.pill_kids);
-
-    safeSet("t_navHome", t.navHome);
-    safeSet("t_navCategories", t.navCategories);
-    safeSet("t_navCart", t.navCart);
-    safeSet("t_navProfile", t.navProfile);
-
-    safeSet("t_mallTitle", t.mallTitle);
-    safeHTML("t_mallDesc", t.mallDesc);
-    safeSet("t_mallBtn", t.mallBtn);
-
-    safeSet("t_cartTitle", t.cartTitle);
-    safeSet("t_cartUnit", t.cartUnit);
-    safeSet("t_emptyCartMsg", t.emptyCart);
-
-    safeSet("cat_all", t.cat_all);
-    safeSet("cat_shoes", t.cat_shoes);
-    safeSet("cat_flowers", t.cat_flowers);
-    safeSet("cat_beauty", t.cat_beauty);
-    safeSet("cat_home", t.cat_home);
-    safeSet("cat_sweets", t.cat_sweets);
-    safeSet("cat_fashion", t.cat_fashion);
-
-    document.querySelectorAll(".lang-option").forEach(btn => {
-        if (btn.getAttribute("data-lang") === lang) btn.classList.add("active");
-        else btn.classList.remove("active");
-    });
-
-    closeLanguageModal();
-}
-
-function openCart() { document.getElementById("cartModal").classList.add("open"); }
-function closeCart() { document.getElementById("cartModal").classList.remove("open"); }
-function checkoutWhatsApp() { alert(translations[currentLang].emptyCart); }
-
-function openCategoriesModal() { document.getElementById("categoriesModal").classList.add("open"); }
-function closeCategoriesModal() { document.getElementById("categoriesModal").classList.remove("open"); }
-
-function selectCategory(catId, el) {
-    document.querySelectorAll(".cat-circle-item").forEach(c => c.classList.remove("active"));
-    if (el) el.classList.add("active");
-    closeCategoriesModal();
-}
-
-function setGenderFilter(g, btn) {
-    document.querySelectorAll(".gender-pills .pill").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-}
-
-function openProfileModal() {
-    loadUserProfile();
-    document.getElementById("profileModal").classList.add("open");
-}
-function closeProfileModal() { document.getElementById("profileModal").classList.remove("open"); }
-
-function contactSupportWhatsApp() {
-    window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent("سڵاو، پرسیارەکم هەبوو دەربارەی ئەپێ بازاڕی:")}`, "_blank");
-}
+let selectedGov = "duhok";
+let selectedDist = "ناوەند";
 
 function openLocationModal() {
     document.getElementById("locationModal").classList.add("open");
@@ -331,9 +331,7 @@ function closeLocationModal() { document.getElementById("locationModal").classLi
 function renderGovernorates() {
     const box = document.getElementById("governorateChips");
     box.innerHTML = Object.keys(kurdistanLocations).map(k => `
-        <button class="chip-btn ${k === selectedGov ? 'active' : ''}" onclick="selectGov('${k}')">
-            ${kurdistanLocations[k].name}
-        </button>
+        <button class="chip-btn ${k === selectedGov ? 'active' : ''}" onclick="selectGov('${k}')">${kurdistanLocations[k].name}</button>
     `).join("");
 }
 
@@ -346,8 +344,7 @@ function selectGov(k) {
 
 function renderDistricts() {
     const box = document.getElementById("districtChips");
-    const dists = kurdistanLocations[selectedGov].districts;
-    box.innerHTML = dists.map(d => `
+    box.innerHTML = kurdistanLocations[selectedGov].districts.map(d => `
         <button class="chip-btn ${d === selectedDist ? 'active' : ''}" onclick="selectDist('${d}')">${d}</button>
     `).join("");
 }
@@ -364,6 +361,9 @@ function confirmLocation() {
     closeLocationModal();
 }
 
+/* ========================================================
+   ناڤیگەیشن و مۆداڵێن دی
+======================================================== */
 function switchTab(tab) {
     document.querySelectorAll(".bottom-nav .nav-item").forEach(el => el.classList.remove("active"));
     if (tab === 'home') {
@@ -378,7 +378,43 @@ function switchTab(tab) {
     }
 }
 
-/* دەستپێکرن */
+function openCategoriesModal() { document.getElementById("categoriesModal").classList.add("open"); }
+function closeCategoriesModal() { document.getElementById("categoriesModal").classList.remove("open"); }
+
+function openCart() { document.getElementById("cartModal").classList.add("open"); }
+function closeCart() { document.getElementById("cartModal").classList.remove("open"); }
+
+function openLanguageModal() { document.getElementById("languageModal").classList.add("open"); }
+function closeLanguageModal() { document.getElementById("languageModal").classList.remove("open"); }
+function switchLangFromProfile() { closeProfileModal(); openLanguageModal(); }
+function selectLanguage() { closeLanguageModal(); }
+
+function openProfileModal() {
+    loadUserProfile();
+    document.getElementById("profileModal").classList.add("open");
+}
+function closeProfileModal() { document.getElementById("profileModal").classList.remove("open"); }
+
+function rentStoreWhatsApp() {
+    window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent("سڵاو، دڤێت دوکانا خۆ ل بازاڕی کرێ بکەم:")}`, "_blank");
+}
+
+function contactSupportWhatsApp() {
+    window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent("سڵاو، پسیارەکم هەبوو دەربارەی بازاڕی:")}`, "_blank");
+}
+
+function selectCategory(catId, el) {
+    document.querySelectorAll(".cat-circle-item").forEach(c => c.classList.remove("active"));
+    if (el) el.classList.add("active");
+    closeCategoriesModal();
+}
+
+function setGenderFilter(g, btn) {
+    document.querySelectorAll(".gender-pills .pill").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+}
+
+/* دەستپێکرنا ئەپێ */
 loadUserProfile();
 renderGovernorates();
 renderDistricts();

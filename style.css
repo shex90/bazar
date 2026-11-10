@@ -10,7 +10,7 @@ body {
     background: radial-gradient(circle at 10% 20%, #fff8f2 0%, #f4f6fa 60%, #eef2f7 100%);
     color: #1f2937;
     min-height: 100vh;
-    padding-bottom: 75px;
+    padding-bottom: 80px;
 }
 
 /* Header */
@@ -32,7 +32,6 @@ body {
     gap: 8px;
 }
 
-/* Logo & Flag */
 .brand {
     display: flex;
     align-items: center;
@@ -62,7 +61,6 @@ body {
     display: block;
 }
 
-/* دوگمەیا جهێ */
 .location-btn {
     display: flex;
     align-items: center;
@@ -87,7 +85,6 @@ body {
     gap: 6px;
 }
 
-/* دوگمەیا شیک یا کرێکرنا دوکانێ ل سەرێ ئەپێ */
 .rent-store-btn {
     display: flex;
     align-items: center;
@@ -242,13 +239,12 @@ body {
 /* Products Grid & Empty State */
 .products-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
     padding: 6px 14px;
 }
 
 .empty-mall-card {
-    grid-column: 1 / -1;
     text-align: center;
     padding: 40px 18px;
     background: #ffffff;
@@ -338,14 +334,16 @@ body {
     align-items: flex-end;
 }
 
-.modal-overlay.open { display: flex; }
+.modal-overlay.open {
+    display: flex !important;
+}
 
 .modal-sheet {
     background: #ffffff;
     width: 100%;
     border-radius: 24px 24px 0 0;
     padding: 18px;
-    max-height: 82vh;
+    max-height: 85vh;
     overflow-y: auto;
     animation: slideUp 0.25s ease-out;
 }
@@ -371,88 +369,161 @@ body {
     cursor: pointer;
 }
 
-/* Language List */
-.lang-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.lang-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 14px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.lang-option .checkmark {
-    display: none;
-    color: #f27a1a;
-}
-
-.lang-option.active {
-    background: #fff4ec;
-    border-color: #f27a1a;
-    color: #f27a1a;
-}
-
-.lang-option.active .checkmark {
-    display: inline-block;
-}
-
-/* Categories Sheet */
-.all-categories-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.cat-full-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.cat-full-row i { font-size: 18px; color: #f27a1a; }
-
-/* Profile Sheet */
+/* بەشێ وێنەیێ پرۆفایلی */
 .profile-card-top {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     background: #f8fafc;
-    padding: 12px;
-    border-radius: 14px;
-    margin-bottom: 14px;
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.avatar-circle, #userAvatarImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f27a1a;
 }
 
 .avatar-circle {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
     background: #e2e8f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 24px;
     color: #64748b;
 }
 
-.profile-card-top h4 { font-size: 14px; font-weight: 800; }
-.profile-card-top p { font-size: 12px; color: #64748b; }
+.avatar-edit-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    background: #f27a1a;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1.5px solid #fff;
+}
+
+.avatar-text h4 { font-size: 14.5px; font-weight: 800; color: #1e293b; }
+.avatar-text p { font-size: 12px; color: #64748b; }
+
+/* فۆڕما ئەکاونتێ */
+.account-form-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.account-form-box h5 {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+[dir="ltr"] .form-group {
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 12.5px;
+    outline: none;
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.form-group input:focus {
+    border-color: #f27a1a;
+    background: #fff;
+}
+
+/* دوگمەیا GPS */
+.get-gps-btn {
+    width: 100%;
+    background: #fff;
+    border: 1.5px dashed #f27a1a;
+    color: #f27a1a;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.get-gps-btn:active {
+    background: #fff4ec;
+}
+
+.gps-status {
+    font-size: 11px;
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+.gps-status.success { color: #16a34a; }
+.gps-status.error { color: #dc2626; }
+
+.save-profile-btn {
+    width: 100%;
+    background: #1e293b;
+    color: #fff;
+    border: none;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.save-profile-btn:active { transform: scale(0.98); }
 
 .vendor-box {
     background: linear-gradient(135deg, #fff7ed, #ffedd5);
@@ -534,41 +605,47 @@ body {
     cursor: pointer;
 }
 
-/* Cart Sheet */
-.cart-items-list {
-    max-height: 250px;
-    overflow-y: auto;
-    margin-bottom: 12px;
-}
-
-.cart-item-row {
+/* Language List */
+.lang-list { display: flex; flex-direction: column; gap: 8px; }
+.lang-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.cart-summary {
+    padding: 12px 14px;
     background: #f8fafc;
-    padding: 12px;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.summary-row {
+.lang-option .checkmark { display: none; color: #f27a1a; }
+.lang-option.active { background: #fff4ec; border-color: #f27a1a; color: #f27a1a; }
+.lang-option.active .checkmark { display: inline-block; }
+#languageModal { z-index: 500 !important; }
+
+/* Categories Sheet */
+.all-categories-list { display: flex; flex-direction: column; gap: 10px; }
+.cat-full-row {
     display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-bottom: 6px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
 }
+.cat-full-row i { font-size: 18px; color: #f27a1a; }
 
-.total-row {
-    font-size: 16px;
-    font-weight: 900;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 8px;
-    margin-top: 6px;
-}
+/* Cart Sheet */
+.cart-items-list { max-height: 250px; overflow-y: auto; margin-bottom: 12px; }
+.cart-summary { background: #f8fafc; padding: 12px; border-radius: 12px; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.total-row { font-size: 16px; font-weight: 900; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 6px; }
 
 .whatsapp-checkout-btn {
     width: 100%;
@@ -587,12 +664,6 @@ body {
     gap: 8px;
 }
 
-/* RTL / LTR Helpers */
 [dir="ltr"] .profile-link-item span,
-[dir="ltr"] .cat-full-row span {
-    text-align: left;
-}
-
-[dir="ltr"] .nav-arrow {
-    transform: rotate(180deg);
-}
+[dir="ltr"] .cat-full-row span { text-align: left; }
+[dir="ltr"] .nav-arrow { transform: rotate(180deg); }
